@@ -7,14 +7,16 @@ import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
+import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 
-public class Test_createwallet extends AbstractJavaSamplerClient {
+public class Test_createwalletByPri extends AbstractJavaSamplerClient {
 	
 	public Arguments getDefaultParameters() {
 		Arguments params = new Arguments();
 		params.addArgument("url", "D:\\");
 		params.addArgument("password", "88888888");
+		params.addArgument("privateKey", "88888888");
 		return params;
 	}
 	@Override
@@ -23,7 +25,8 @@ public class Test_createwallet extends AbstractJavaSamplerClient {
 		sr.sampleStart();
 		String result = null;
 		try {
-			result = WalletUtils.generateNewWalletFile(arg0.getParameter("password"), new File(arg0.getParameter("url")));
+			Credentials credentials = Credentials.create(arg0.getParameter("privateKey"));
+			result = WalletUtils.generateWalletFile(arg0.getParameter("password"), credentials.getEcKeyPair(), new File(arg0.getParameter("url")), true);
 			sr.setSuccessful(true);
 		} catch (Exception e) {
 			result = e.getMessage();
@@ -41,7 +44,7 @@ public class Test_createwallet extends AbstractJavaSamplerClient {
 		params.addArgument("url", "D:\\");
 		params.addArgument("password", "88888888");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
-		Test_createwallet test = new Test_createwallet();
+		Test_createwalletByPri test = new Test_createwalletByPri();
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());
 	}
