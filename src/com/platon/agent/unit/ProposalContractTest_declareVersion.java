@@ -6,6 +6,7 @@ import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
 import org.web3j.platon.BaseResponse;
+import org.web3j.platon.bean.ProgramVersion;
 import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
@@ -42,7 +43,8 @@ public class ProposalContractTest_declareVersion extends AbstractJavaSamplerClie
 		sr.sampleStart();
 		try {
 			String verifier = arg.getParameter("verifier");
-            BaseResponse<?> baseResponse = proposalContract.declareVersion(verifier).send();
+			ProgramVersion programVersion = proposalContract.getProgramVersion();
+            BaseResponse<?> baseResponse = proposalContract.declareVersion(programVersion,verifier).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

@@ -6,6 +6,7 @@ import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
 import org.web3j.platon.BaseResponse;
+import org.web3j.platon.bean.ProgramVersion;
 import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
@@ -43,13 +44,11 @@ public class ProposalContractTest_programVersion extends AbstractJavaSamplerClie
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse<?> baseResponse = proposalContract.getProgramVersion().send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
+			ProgramVersion programVersion = proposalContract.getProgramVersion();
+			if(programVersion != null) {
 				sr.setSuccessful(true);
-				result = JSONObject.toJSONString(baseResponse.data);
+				result = JSONObject.toJSONString(programVersion);
 			} else {
-				result = baseResponse.errMsg;
 				sr.setSuccessful(false);
 			}
 		} catch (Exception e) {

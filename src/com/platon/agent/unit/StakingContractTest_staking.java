@@ -83,7 +83,8 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 					.stakingReturnTransaction(new StakingParam.Builder().setNodeId(nodeId)
 							.setAmount(stakingAmount.toBigInteger()).setStakingAmountType(stakingAmountType)
 							.setBenifitAddress(benifitAddress).setExternalId(externalId).setNodeName(nodeName)
-							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey).build())
+							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey).setProcessVersion(stakingContract.getProgramVersion())
+				               .setBlsProof(stakingContract.getAdminSchnorrNIZKProve()).build())
 					.send();
 			BaseResponse<?> baseResponse = stakingContract.getStakingResult(platonSendTransaction).send();
 			result = baseResponse.toString();
