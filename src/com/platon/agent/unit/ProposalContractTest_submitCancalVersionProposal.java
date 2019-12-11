@@ -7,13 +7,13 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.FunctionType;
-import org.web3j.platon.bean.Proposal;
-import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.ProposalContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 
 public class ProposalContractTest_submitCancalVersionProposal extends AbstractJavaSamplerClient {
 	
@@ -50,7 +50,7 @@ public class ProposalContractTest_submitCancalVersionProposal extends AbstractJa
         	Proposal proposal = Proposal.createSubmitCancelProposalParam(nodeId, pIDID, BigInteger.valueOf(1),
         			arg.getParameter("proposalHash"));
         	PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal).send();
-            BaseResponse<?> baseResponse = proposalContract.getSubmitProposalResult(platonSendTransaction, FunctionType.SUBMIT_CANCEL_FUNC_TYPE).send();
+            BaseResponse baseResponse = proposalContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

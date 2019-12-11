@@ -7,12 +7,13 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.bean.Proposal;
-import org.web3j.platon.bean.TallyResult;
-import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.ProposalContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.CallResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 
 
 public class ProposalContractTest_listProposal extends AbstractJavaSamplerClient {
@@ -42,11 +43,11 @@ public class ProposalContractTest_listProposal extends AbstractJavaSamplerClient
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse<List<Proposal>> baseResponse = proposalContract.getProposalList().send();
+			CallResponse<List<Proposal>> baseResponse = proposalContract.getProposalList().send();
             result = baseResponse.toString();
-            List<Proposal> proposalList = baseResponse.data;
+            List<Proposal> proposalList = baseResponse.getData();
             for (Proposal proposal : proposalList) {
-                BaseResponse<TallyResult> resp = proposalContract.getTallyResult(proposal.getProposalId()).send();
+                BaseResponse resp = proposalContract.getTallyResult(proposal.getProposalId()).send();
                 result += ";" +resp.toString();
 			}
 			sr.setSuccessful(true);

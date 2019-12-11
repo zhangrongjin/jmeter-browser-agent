@@ -5,12 +5,13 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.DuplicateSignType;
-import org.web3j.platon.contracts.SlashContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.SlashContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.common.DuplicateSignType;
 
 public class SlashContractTest_reportDuplicateSign extends AbstractJavaSamplerClient {
 
@@ -56,7 +57,7 @@ public class SlashContractTest_reportDuplicateSign extends AbstractJavaSamplerCl
 		try {
 			PlatonSendTransaction platonSendTransaction = 
 				slashContract.reportDoubleSignReturnTransaction(DuplicateSignType.PREPARE_BLOCK, arg.getParameter("data")).send();
-			BaseResponse<?> baseResponse = slashContract.getReportDoubleSignResult(platonSendTransaction).send();
+			BaseResponse baseResponse = slashContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

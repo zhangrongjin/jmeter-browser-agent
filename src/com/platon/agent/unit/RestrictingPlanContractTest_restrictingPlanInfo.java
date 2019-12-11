@@ -5,11 +5,11 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.bean.RestrictingItem;
-import org.web3j.platon.contracts.RestrictingPlanContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.RestrictingPlanContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
 /**
  * 锁仓计划接口，包括， 创建锁仓计划 获取锁仓信息
@@ -45,7 +45,7 @@ public class RestrictingPlanContractTest_restrictingPlanInfo extends AbstractJav
 		sr.sampleStart();
 		try {
 			String address = arg.getParameter("address");
-			BaseResponse<RestrictingItem> baseResponse = restrictingPlanContract.getRestrictingInfo(address).send();
+			BaseResponse baseResponse = restrictingPlanContract.getRestrictingInfo(address).send();
 			result = baseResponse.toString();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

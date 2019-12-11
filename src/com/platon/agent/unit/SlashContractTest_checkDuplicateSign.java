@@ -7,11 +7,12 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.DuplicateSignType;
-import org.web3j.platon.contracts.SlashContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.SlashContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.common.DuplicateSignType;
 
 public class SlashContractTest_checkDuplicateSign extends AbstractJavaSamplerClient {
 
@@ -46,7 +47,7 @@ public class SlashContractTest_checkDuplicateSign extends AbstractJavaSamplerCli
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse<?> baseResponse = slashContract.checkDoubleSign(DuplicateSignType.PREPARE_BLOCK,
+			BaseResponse baseResponse = slashContract.checkDoubleSign(DuplicateSignType.PREPARE_BLOCK,
 					arg.getParameter("address"), new BigInteger(arg.getParameter("blockNumber"))).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

@@ -1,19 +1,17 @@
 package com.platon.agent.unit;
 
-import java.math.BigInteger;
-
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.FunctionType;
-import org.web3j.platon.bean.Proposal;
-import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.ProposalContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 
 public class ProposalContractTest_submitParamsProposal extends AbstractJavaSamplerClient {
 	
@@ -54,7 +52,7 @@ public class ProposalContractTest_submitParamsProposal extends AbstractJavaSampl
 			String value = arg.getParameter("value");
         	Proposal proposal = Proposal.createSubmitParamProposalParam(nodeId, pIDID, module, name,value);
         	PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal).send();
-            BaseResponse<?> baseResponse = proposalContract.getSubmitProposalResult(platonSendTransaction, FunctionType.SUBMIT_CANCEL_FUNC_TYPE).send();
+            BaseResponse baseResponse = proposalContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);
@@ -78,7 +76,9 @@ public class ProposalContractTest_submitParamsProposal extends AbstractJavaSampl
 		params.addArgument("nodeId", "0x0aa9805681d8f77c05f317efc141c97d5adb511ffb51f5a251d2d7a4a3a96d9a12adf39f06b702f0ccdff9eddc1790eb272dca31b0c47751d49b5931c58701e7");
 		params.addArgument("chainId", "100");
 		params.addArgument("pIDID", "8");
-		params.addArgument("proposalHash", "0x0f91b6612990395c41ad7ecf559572022d489034f5e883788ea43453a427288f");
+		params.addArgument("module", "staking");
+		params.addArgument("name", "maxValidators");
+		params.addArgument("value", "5");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		ProposalContractTest_submitParamsProposal test = new ProposalContractTest_submitParamsProposal();
 		test.setupTest(arg0);

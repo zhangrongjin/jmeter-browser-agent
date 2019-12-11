@@ -8,13 +8,14 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.contracts.DelegateContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
+
+import com.platon.sdk.contracts.ppos.DelegateContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
 public class DelegateContractTest_unDelegate extends AbstractJavaSamplerClient {
 	
@@ -57,7 +58,7 @@ public class DelegateContractTest_unDelegate extends AbstractJavaSamplerClient {
 			PlatonSendTransaction platonSendTransaction = 
 					delegateContract.unDelegateReturnTransaction(
 							arg.getParameter("nodeId"), stakingBlockNum, stakingAmount.toBigInteger()).send();
-			BaseResponse<?> baseResponse = delegateContract.getUnDelegateResult(platonSendTransaction).send();
+			BaseResponse baseResponse = delegateContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

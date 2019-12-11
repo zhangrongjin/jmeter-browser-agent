@@ -7,14 +7,15 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.StakingAmountType;
-import org.web3j.platon.contracts.DelegateContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
+
+import com.platon.sdk.contracts.ppos.DelegateContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
 
 public class DelegateContractTest_delegate extends AbstractJavaSamplerClient {
 	
@@ -56,7 +57,7 @@ public class DelegateContractTest_delegate extends AbstractJavaSamplerClient {
 			PlatonSendTransaction platonSendTransaction = 
 					delegateContract.delegateReturnTransaction(
 							arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger()).send();
-			BaseResponse<?> baseResponse = delegateContract.getDelegateResult(platonSendTransaction).send();
+			BaseResponse baseResponse = delegateContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

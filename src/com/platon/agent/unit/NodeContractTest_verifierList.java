@@ -6,13 +6,13 @@ import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.bean.Node;
-import org.web3j.platon.contracts.NodeContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 
 import com.alibaba.fastjson.JSON;
+import com.platon.sdk.contracts.ppos.NodeContract;
+import com.platon.sdk.contracts.ppos.dto.CallResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.Node;
 
 public class NodeContractTest_verifierList extends AbstractJavaSamplerClient {
 	
@@ -39,8 +39,8 @@ public class NodeContractTest_verifierList extends AbstractJavaSamplerClient {
 		String result = null;
 		try {
 			sr.sampleStart();
-			BaseResponse<List<Node>> baseResponse = nodeContract.getVerifierList().send();
-			List<Node> nodeList = baseResponse.data;
+			CallResponse<List<Node>> baseResponse = nodeContract.getVerifierList().send();
+			List<Node> nodeList = baseResponse.getData();
 			result = JSON.toJSONString(nodeList, true);
 			sr.setSuccessful(true);
 		} catch (Exception e) {

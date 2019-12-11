@@ -7,11 +7,11 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.bean.Delegation;
-import org.web3j.platon.contracts.DelegateContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.DelegateContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
 public class DelegateContractTest_delegateInfo extends AbstractJavaSamplerClient {
 	
@@ -52,7 +52,7 @@ public class DelegateContractTest_delegateInfo extends AbstractJavaSamplerClient
 		try {
 			Credentials delegate = Credentials.create(arg.getParameter("delAddr"));
 			BigInteger stakingBlockNum = BigInteger.valueOf(Long.parseLong(arg.getParameter("stakingBlockNum")));
-			BaseResponse<Delegation> baseResponse = 
+			BaseResponse baseResponse = 
 				delegateContract.getDelegateInfo(arg.getParameter("nodeId"),delegate.getAddress(), stakingBlockNum).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

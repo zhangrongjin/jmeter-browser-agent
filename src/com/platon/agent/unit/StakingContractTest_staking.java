@@ -9,15 +9,16 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.StakingAmountType;
-import org.web3j.platon.bean.StakingParam;
-import org.web3j.platon.contracts.StakingContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
+
+import com.platon.sdk.contracts.ppos.StakingContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
+import com.platon.sdk.contracts.ppos.dto.req.StakingParam;
 
 public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 
@@ -83,10 +84,10 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 					.stakingReturnTransaction(new StakingParam.Builder().setNodeId(nodeId)
 							.setAmount(stakingAmount.toBigInteger()).setStakingAmountType(stakingAmountType)
 							.setBenifitAddress(benifitAddress).setExternalId(externalId).setNodeName(nodeName)
-							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey).setProcessVersion(stakingContract.getProgramVersion())
-				               .setBlsProof(stakingContract.getAdminSchnorrNIZKProve()).build())
+							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey).setProcessVersion(web3j.getProgramVersion().send().getAdminProgramVersion())
+				               .setBlsProof(web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build())
 					.send();
-			BaseResponse<?> baseResponse = stakingContract.getStakingResult(platonSendTransaction).send();
+			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

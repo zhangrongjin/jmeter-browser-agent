@@ -17,7 +17,7 @@ import org.web3j.utils.Convert.Unit;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platon.agent.check.RestrictingBalance;
-import com.platon.agent.check.SpecialContractApi;
+import com.platon.agent.check.SpecialApi;
 
 public class Test_getBalance extends AbstractJavaSamplerClient {
 	
@@ -40,7 +40,7 @@ public class Test_getBalance extends AbstractJavaSamplerClient {
 	
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg0) {
-		SpecialContractApi specialContractApi = new SpecialContractApi();
+		SpecialApi specialContractApi = new SpecialApi();
 		SampleResult sr = new SampleResult();
 		sr.sampleStart();
 		String result = null;

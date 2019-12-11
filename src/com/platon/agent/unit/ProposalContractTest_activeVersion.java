@@ -5,10 +5,11 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.ProposalContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
 public class ProposalContractTest_activeVersion extends AbstractJavaSamplerClient {
 	
@@ -40,7 +41,7 @@ public class ProposalContractTest_activeVersion extends AbstractJavaSamplerClien
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse<?> baseResponse = proposalContract.getActiveVersion().send();
+			BaseResponse baseResponse = proposalContract.getActiveVersion().send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

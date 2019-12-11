@@ -10,14 +10,15 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.bean.RestrictingPlan;
-import org.web3j.platon.contracts.RestrictingPlanContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
+
+import com.platon.sdk.contracts.ppos.RestrictingPlanContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.RestrictingPlan;
 
 /**
  * 锁仓计划接口，包括， 创建锁仓计划 获取锁仓信息
@@ -67,7 +68,7 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends AbstractJ
     		String address = arg.getParameter("address");
     		PlatonSendTransaction platonSendTransaction = 
     				restrictingPlanContract.createRestrictingPlanReturnTransaction(address, restrictingPlans).send();
-			BaseResponse<?> baseResponse = restrictingPlanContract.getCreateRestrictingPlanResult(platonSendTransaction).send();
+			BaseResponse baseResponse = restrictingPlanContract.getTransactionResponse(platonSendTransaction).send();
 			
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

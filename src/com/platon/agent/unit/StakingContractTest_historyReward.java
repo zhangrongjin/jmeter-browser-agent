@@ -1,6 +1,6 @@
 package com.platon.agent.unit;
 
-import java.util.List;
+import java.math.BigInteger;
 
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
@@ -9,42 +9,44 @@ import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 
-import com.alibaba.fastjson.JSON;
-import com.platon.sdk.contracts.ppos.NodeContract;
-import com.platon.sdk.contracts.ppos.dto.CallResponse;
-import com.platon.sdk.contracts.ppos.dto.resp.Node;
+import com.alibaba.fastjson.JSONObject;
+import com.platon.agent.base.EpochInfo;
+import com.platon.agent.check.SpecialApi;
 
-public class NodeContractTest_validatorList extends AbstractJavaSamplerClient {
-	
+public class StakingContractTest_historyReward extends AbstractJavaSamplerClient {
+
 	public Arguments getDefaultParameters() {
 		Arguments params = new Arguments();
 		params.addArgument("url", "http://192.168.112.171:6789");
+		params.addArgument("blockNumber", "0");
 		return params;
 	}
 
 	private Web3j web3j;
-	private NodeContract nodeContract;
 
 	public void setupTest(JavaSamplerContext arg) {
-		web3j = Web3j.build(new HttpService(arg.getParameter("url")));
-		nodeContract = NodeContract.load(web3j);
+		try {
+			web3j = Web3j.build(new HttpService(arg.getParameter("url")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/**
-	 * 查询当前共识周期的验证人列表
+	 * 查询当前节点的质押信息 nodeId 被质押的节点的NodeId
 	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();
 		String result = null;
+		sr.sampleStart();
 		try {
-			sr.sampleStart();
-			CallResponse<List<Node>> baseResponse = nodeContract.getValidatorList().send();
-			List<Node> nodeList = baseResponse.getData();
-			result = JSON.toJSONString(nodeList, true);
-			sr.setSuccessful(true);
+			String blockNumber = arg.getParameter("blockNumber");
+			SpecialApi specialContractApi = new SpecialApi();
+			EpochInfo epochInfo = specialContractApi.getEpochInfo(web3j, new BigInteger(blockNumber));
+			result = JSONObject.toJSONString(epochInfo);
 		} catch (Exception e) {
-			result = e.getMessage();
+			result = e.toString();
 			sr.setSuccessful(false);
 		}
 		sr.setResponseData(result, null);
@@ -56,9 +58,10 @@ public class NodeContractTest_validatorList extends AbstractJavaSamplerClient {
 	
 	public static void main(String[] args) {
 		Arguments params = new Arguments();
-		params.addArgument("url", "http://192.168.112.171:6789");
+		params.addArgument("url", "http://192.168.112.172:8789");
+		params.addArgument("blockNumber", "1600");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
-		NodeContractTest_validatorList test = new NodeContractTest_validatorList();
+		StakingContractTest_historyReward test = new StakingContractTest_historyReward();
 		test.setupTest(arg0);
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());

@@ -5,11 +5,12 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.contracts.StakingContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.StakingContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
 public class StakingContractTest_unStaking extends AbstractJavaSamplerClient {
 
@@ -47,7 +48,7 @@ public class StakingContractTest_unStaking extends AbstractJavaSamplerClient {
 		try {
 			String nodeId = arg.getParameter("nodeId");
 			PlatonSendTransaction platonSendTransaction = stakingContract.unStakingReturnTransaction(nodeId).send();
-			BaseResponse<?> baseResponse = stakingContract.getUnStakingResult(platonSendTransaction).send();
+			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

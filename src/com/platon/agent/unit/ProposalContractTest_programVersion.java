@@ -4,10 +4,7 @@ import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
-import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
 import org.web3j.platon.bean.ProgramVersion;
-import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 
@@ -26,13 +23,8 @@ public class ProposalContractTest_programVersion extends AbstractJavaSamplerClie
     
 	private Web3j web3j;
 	
-    private Credentials stakingCredentials;
-	private ProposalContract proposalContract;
-
 	public void setupTest(JavaSamplerContext arg) {
 		web3j = Web3j.build(new HttpService(arg.getParameter("url")));
-    	stakingCredentials = Credentials.create(arg.getParameter("stakingPrivateKey"));
-        proposalContract = ProposalContract.load(web3j,stakingCredentials, arg.getParameter("chainId"));
 	}
 	
 	/**
@@ -44,7 +36,7 @@ public class ProposalContractTest_programVersion extends AbstractJavaSamplerClie
 		String result = null;
 		sr.sampleStart();
 		try {
-			ProgramVersion programVersion = proposalContract.getProgramVersion();
+			ProgramVersion programVersion = web3j.getProgramVersion().send().getAdminProgramVersion();
 			if(programVersion != null) {
 				sr.setSuccessful(true);
 				result = JSONObject.toJSONString(programVersion);

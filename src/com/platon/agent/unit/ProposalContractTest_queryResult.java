@@ -5,12 +5,11 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.Credentials;
-import org.web3j.platon.BaseResponse;
-import org.web3j.platon.bean.Proposal;
-import org.web3j.platon.bean.TallyResult;
-import org.web3j.platon.contracts.ProposalContract;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+
+import com.platon.sdk.contracts.ppos.ProposalContract;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
 public class ProposalContractTest_queryResult extends AbstractJavaSamplerClient {
 	
@@ -41,8 +40,8 @@ public class ProposalContractTest_queryResult extends AbstractJavaSamplerClient 
 		sr.sampleStart();
 		try {
 			String proposalID = arg.getParameter("proposalID");
-			BaseResponse<Proposal> baseResponse = proposalContract.getProposal(proposalID).send();
-			BaseResponse<TallyResult> response = proposalContract.getTallyResult(proposalID).send();
+			BaseResponse baseResponse = proposalContract.getProposal(proposalID).send();
+			BaseResponse response = proposalContract.getTallyResult(proposalID).send();
 
 			result = "提案信息：" + baseResponse.toString() + ",投票结果：" + response.toString();
 			if(baseResponse.isStatusOk()) {

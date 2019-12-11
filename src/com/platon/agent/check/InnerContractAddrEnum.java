@@ -1,6 +1,7 @@
 package com.platon.agent.check;
 
-import org.web3j.platon.ContractAddress;
+
+import com.platon.sdk.contracts.ppos.dto.common.ContractAddress;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,8 +23,8 @@ public enum InnerContractAddrEnum {
     INCENTIVE_POOL_CONTRACT(ContractAddress.INCENTIVE_POOL_CONTRACT_ADDRESS,"激励池合约"),
     NODE_CONTRACT(ContractAddress.NODE_CONTRACT_ADDRESS,"节点相关合约");
 
-    public String address;
-    public String desc;
+    private String address;
+    private String desc;
 
     InnerContractAddrEnum(String address, String desc) {
         this.address = address;
@@ -38,7 +39,8 @@ public enum InnerContractAddrEnum {
         return desc;
     }
 
-    public static final Set<String> ADDRESSES = new HashSet<>();
+    private static final Set<String> ADDRESSES = new HashSet<>();
+    public static Set<String> getAddresses(){return ADDRESSES;}
 
     static {
         Arrays.asList(InnerContractAddrEnum.values()).forEach(innerContractAddEnum-> ADDRESSES.add(innerContractAddEnum.address));
