@@ -44,7 +44,10 @@ public class StakingContractTest_historyReward extends AbstractJavaSamplerClient
 			String blockNumber = arg.getParameter("blockNumber");
 			SpecialApi specialContractApi = new SpecialApi();
 			EpochInfo epochInfo = specialContractApi.getEpochInfo(web3j, new BigInteger(blockNumber));
-			result = JSONObject.toJSONString(epochInfo);
+			if(epochInfo != null) {
+				result = JSONObject.toJSONString(epochInfo);
+				sr.setSuccessful(true);
+			}
 		} catch (Exception e) {
 			result = e.toString();
 			sr.setSuccessful(false);
