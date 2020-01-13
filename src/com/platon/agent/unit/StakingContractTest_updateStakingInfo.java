@@ -1,5 +1,7 @@
 package com.platon.agent.unit;
 
+import java.math.BigInteger;
+
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
@@ -27,6 +29,7 @@ public class StakingContractTest_updateStakingInfo extends AbstractJavaSamplerCl
 		params.addArgument("nodeName", "chendai-node1-001");
 		params.addArgument("webSite", "www.baidu.com-001");
 		params.addArgument("details", "chendai-node1-details-001");
+		params.addArgument("rewardPer", "100");
 		return params;
 	}
 
@@ -63,10 +66,12 @@ public class StakingContractTest_updateStakingInfo extends AbstractJavaSamplerCl
 			String webSite = arg.getParameter("webSite");
 			String details = arg.getParameter("details");
 			String nodeId = arg.getParameter("nodeId");
+			String rewardPer = arg.getParameter("rewardPer");
 
 			PlatonSendTransaction platonSendTransaction = stakingContract.updateStakingInfoReturnTransaction(
 					new UpdateStakingParam.Builder().setBenifitAddress(benifitAddress).setExternalId(externalId)
-							.setNodeId(nodeId).setNodeName(nodeName).setWebSite(webSite).setDetails(details).build())
+							.setNodeId(nodeId).setNodeName(nodeName).setWebSite(webSite).setRewardPer(new BigInteger(rewardPer))
+							.setDetails(details).build())
 					.send();
 
 			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
@@ -99,6 +104,7 @@ public class StakingContractTest_updateStakingInfo extends AbstractJavaSamplerCl
 		params.addArgument("nodeName", "chendai-node1-001");
 		params.addArgument("webSite", "www.baidu.com-001");
 		params.addArgument("details", "chendai-node1-details-001");
+		params.addArgument("rewardPer", "100");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		StakingContractTest_updateStakingInfo test = new StakingContractTest_updateStakingInfo();
 		test.setupTest(arg0);

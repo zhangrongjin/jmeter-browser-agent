@@ -1,6 +1,7 @@
 package com.platon.agent.unit;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 
@@ -35,6 +36,7 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 		params.addArgument("nodeName", "chendai-node2");
 		params.addArgument("webSite", "www.baidu.com");
 		params.addArgument("details", "chendai-node2-details");
+		params.addArgument("rewardPer", "100");
 		return params;
 	}
 
@@ -79,12 +81,15 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 			BigDecimal stakingAmount = Convert.toVon(arg.getParameter("stakingAmount"), Unit.LAT).add(BigDecimal.valueOf(1L));
 			String nodeId = arg.getParameter("nodeId");
 			String blsPubKey = arg.getParameter("blsPubKey");
+			String rewardPer = arg.getParameter("rewardPer");
 			
 			PlatonSendTransaction platonSendTransaction = stakingContract
 					.stakingReturnTransaction(new StakingParam.Builder().setNodeId(nodeId)
 							.setAmount(stakingAmount.toBigInteger()).setStakingAmountType(stakingAmountType)
 							.setBenifitAddress(benifitAddress).setExternalId(externalId).setNodeName(nodeName)
-							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey).setProcessVersion(web3j.getProgramVersion().send().getAdminProgramVersion())
+							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey)
+							.setRewardPer(new BigInteger(rewardPer))
+							.setProcessVersion(web3j.getProgramVersion().send().getAdminProgramVersion())
 				               .setBlsProof(web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build())
 					.send();
 			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
@@ -118,6 +123,7 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 		params.addArgument("nodeName", "chendai-node2");
 		params.addArgument("webSite", "www.baidu.com");
 		params.addArgument("details", "chendai-node2-details");
+		params.addArgument("rewardPer", "100");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		StakingContractTest_staking test = new StakingContractTest_staking();
 		test.setupTest(arg0);
