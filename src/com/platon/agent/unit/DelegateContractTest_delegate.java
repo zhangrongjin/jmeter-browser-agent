@@ -77,7 +77,7 @@ public class DelegateContractTest_delegate extends AbstractJavaSamplerClient {
 	
 	public static void main(String[] args) {
 		Arguments params = new Arguments();
-		params.addArgument("url", "http://192.168.112.171:6789");
+		params.addArgument("url", "http://192.168.112.172:8789");
 		params.addArgument("delegatePrivateKey", "4484092b68df58d639f11d59738983e2b8b81824f3c0c759edd6773f9adadfe7");
 		params.addArgument("nodeId", "0x0aa9805681d8f77c05f317efc141c97d5adb511ffb51f5a251d2d7a4a3a96d9a12adf39f06b702f0ccdff9eddc1790eb272dca31b0c47751d49b5931c58701e7");
 		params.addArgument("amount", "5000");

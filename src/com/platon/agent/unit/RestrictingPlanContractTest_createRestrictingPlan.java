@@ -62,7 +62,7 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends AbstractJ
             String[] plans = plan.split(";");
             for(String p:plans) {
             	String[] pd = p.split(",");
-            	BigDecimal pdamount = Convert.toVon(arg.getParameter(pd[1]), Unit.LAT);
+            	BigDecimal pdamount = Convert.toVon(pd[1], Unit.LAT);
             	restrictingPlans.add(new RestrictingPlan( new BigInteger(pd[0]), pdamount.toBigInteger()));
             }
     		String address = arg.getParameter("address");
@@ -89,8 +89,8 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends AbstractJ
 	
 	public static void main(String[] args) {
 		Arguments params = new Arguments();
-		params.addArgument("url", "http://192.168.112.171:6789");
-		params.addArgument("privateKey", "0xa689f0879f53710e9e0c1025af410a530d6381eebb5916773195326e123b822b");
+		params.addArgument("url", "http://192.168.112.172:8789");
+		params.addArgument("privateKey", "a689f0879f53710e9e0c1025af410a530d6381eebb5916773195326e123b822b");
 		params.addArgument("chainId", "100");
 		params.addArgument("address", "0xFD9d508df262a1c968e0D6C757AB08b96D741f4B");
 		params.addArgument("plan", "200,100000000000000000000000;300,200000000000000000000000");

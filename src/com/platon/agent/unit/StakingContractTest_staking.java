@@ -37,6 +37,7 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 		params.addArgument("webSite", "www.baidu.com");
 		params.addArgument("details", "chendai-node2-details");
 		params.addArgument("rewardPer", "100");
+		params.addArgument("type", "2");
 		return params;
 	}
 
@@ -72,7 +73,12 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 		String result = null;
 		sr.sampleStart();
 		try {
+			String type = arg.getParameter("type");
 			StakingAmountType stakingAmountType = StakingAmountType.FREE_AMOUNT_TYPE;
+			if(type.equals("1")) {
+				stakingAmountType = StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+			}
+			
 			String benifitAddress = benefitCredentials.getAddress();
 			String externalId = arg.getParameter("externalId");
 			String nodeName = arg.getParameter("nodeName");

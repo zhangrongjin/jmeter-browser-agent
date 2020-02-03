@@ -58,7 +58,7 @@ public class NodeContractTest_verifierList extends AbstractJavaSamplerClient {
 		Arguments params = new Arguments();
 		params.addArgument("url", "http://192.168.112.171:6789");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
-		NodeContractTest_validatorList test = new NodeContractTest_validatorList();
+		NodeContractTest_verifierList test = new NodeContractTest_verifierList();
 		test.setupTest(arg0);
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());
