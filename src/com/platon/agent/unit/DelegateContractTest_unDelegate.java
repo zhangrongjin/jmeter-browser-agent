@@ -11,6 +11,8 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.GasProvider;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
@@ -27,12 +29,15 @@ public class DelegateContractTest_unDelegate extends AbstractJavaSamplerClient {
 		params.addArgument("stakingAmount", "800000");
 		params.addArgument("stakingBlockNum", "12419");
 		params.addArgument("chainId", "100");
+		params.addArgument("gasPrice", "1000000000");
+		params.addArgument("gasLimit", "4700000");
 		return params;
 	}
 	
 	private Web3j web3j;
 	private Credentials delegateCredentials;
 	private DelegateContract delegateContract;
+	protected GasProvider gasProvider;
 	
 	public void setupTest(JavaSamplerContext arg) {
 		web3j = Web3j.build(new HttpService(arg.getParameter("url")));
@@ -40,6 +45,8 @@ public class DelegateContractTest_unDelegate extends AbstractJavaSamplerClient {
 		delegateCredentials = Credentials.create(arg.getParameter("delegatePrivateKey"));
 
 		delegateContract = DelegateContract.load(web3j, delegateCredentials, arg.getParameter("chainId"));
+		
+		gasProvider = new ContractGasProvider(new BigInteger(arg.getParameter("gasPrice")), new BigInteger(arg.getParameter("gasLimit")));
     }
 	
 	/**
@@ -57,7 +64,7 @@ public class DelegateContractTest_unDelegate extends AbstractJavaSamplerClient {
 			BigInteger stakingBlockNum = BigInteger.valueOf(Long.parseLong(arg.getParameter("stakingBlockNum")));
 			PlatonSendTransaction platonSendTransaction = 
 					delegateContract.unDelegateReturnTransaction(
-							arg.getParameter("nodeId"), stakingBlockNum, stakingAmount.toBigInteger()).send();
+							arg.getParameter("nodeId"), stakingBlockNum, stakingAmount.toBigInteger(),gasProvider).send();
 			BaseResponse baseResponse = delegateContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
@@ -84,6 +91,8 @@ public class DelegateContractTest_unDelegate extends AbstractJavaSamplerClient {
 		params.addArgument("stakingAmount", "1000");
 		params.addArgument("stakingBlockNum", "21924");
 		params.addArgument("chainId", "100");
+		params.addArgument("gasPrice", "1000000000");
+		params.addArgument("gasLimit", "4700000");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		DelegateContractTest_unDelegate test = new DelegateContractTest_unDelegate();
 		test.setupTest(arg0);
