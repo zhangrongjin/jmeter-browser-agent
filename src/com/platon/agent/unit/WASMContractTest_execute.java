@@ -75,7 +75,7 @@ public class WASMContractTest_execute extends AbstractJavaSamplerClient {
 		params.addArgument("addressPrivateKey", "4484092b68df58d639f11d59738983e2b8b81824f3c0c759edd6773f9adadfe7");
 		params.addArgument("gasPrice", "1000000000");
 		params.addArgument("gasLimit", "4700000");
-		params.addArgument("contractAddress", "0x2b977b0318f75d806320c2b55fa94f27ebd3bfde");
+		params.addArgument("contractAddress", "0x45e3a2c064c45b9ff9ea3924d957f7b6730f5a13");
 		params.addArgument("chainId", "100");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		WASMContractTest_execute test = new WASMContractTest_execute();

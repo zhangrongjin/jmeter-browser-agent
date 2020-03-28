@@ -84,7 +84,7 @@ public class StakingContractTest_staking extends AbstractJavaSamplerClient {
 			String nodeName = arg.getParameter("nodeName");
 			String webSite = arg.getParameter("webSite");
 			String details = arg.getParameter("details");
-			BigDecimal stakingAmount = Convert.toVon(arg.getParameter("stakingAmount"), Unit.LAT).add(BigDecimal.valueOf(1L));
+			BigDecimal stakingAmount = Convert.toVon(arg.getParameter("stakingAmount"), Unit.LAT);
 			String nodeId = arg.getParameter("nodeId");
 			String blsPubKey = arg.getParameter("blsPubKey");
 			String rewardPer = arg.getParameter("rewardPer");

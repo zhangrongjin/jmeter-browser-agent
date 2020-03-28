@@ -13,6 +13,7 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.GasProvider;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
@@ -28,6 +29,9 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends AbstractJ
 	private Web3j web3j;
 	private RestrictingPlanContract restrictingPlanContract;
 	private Credentials credentials;
+	
+	protected static final BigInteger GAS_LIMIT = BigInteger.valueOf(470000);
+	protected static final BigInteger GAS_PRICE = BigInteger.valueOf(10000000000L);
 
 	public Arguments getDefaultParameters() {
 		Arguments params = new Arguments();
@@ -67,7 +71,18 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends AbstractJ
             }
     		String address = arg.getParameter("address");
     		PlatonSendTransaction platonSendTransaction = 
-    				restrictingPlanContract.createRestrictingPlanReturnTransaction(address, restrictingPlans).send();
+    				restrictingPlanContract.createRestrictingPlanReturnTransaction(address, restrictingPlans,new GasProvider() {
+    					
+    					@Override
+    					public BigInteger getGasPrice() {
+    						return GAS_PRICE;
+    					}
+    					
+    					@Override
+    					public BigInteger getGasLimit() {
+    						return GAS_LIMIT;
+    					}
+    				}).send();
 			BaseResponse baseResponse = restrictingPlanContract.getTransactionResponse(platonSendTransaction).send();
 			
 			result = baseResponse.toString();
@@ -77,6 +92,7 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends AbstractJ
 				sr.setSuccessful(false);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			result = e.getMessage();
 			sr.setSuccessful(false);
 		}
