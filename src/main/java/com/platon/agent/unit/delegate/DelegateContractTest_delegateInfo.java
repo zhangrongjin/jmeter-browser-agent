@@ -5,18 +5,18 @@ import java.math.BigInteger;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
-import org.web3j.crypto.Credentials;
 
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
+/**
+ * 委托详情
+ * @author Rongjin Zhang
+ *
+ */
 public class DelegateContractTest_delegateInfo extends BaseSampler {
 	
-	/**
-	 * 减持/撤销委托(全部减持就是撤销) stakingBlockNum 代表着某个node的某次质押的唯一标示 nodeId 被质押的节点的NodeId
-	 * amount 减持委托的金额(按照最小单位算，1LAT = 10**18 von)
-	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		this.setupTest(arg);
@@ -25,10 +25,9 @@ public class DelegateContractTest_delegateInfo extends BaseSampler {
 		
 		String result = null;
 		try {
-			Credentials delegate = Credentials.create(arg.getParameter("delAddr"));
 			BigInteger stakingBlockNum = BigInteger.valueOf(Long.parseLong(arg.getParameter("stakingBlockNum")));
 			BaseResponse baseResponse = 
-				delegateContract.getDelegateInfo(arg.getParameter("nodeId"),delegate.getAddress(Long.valueOf(arg.getParameter("chainId"))), stakingBlockNum).send();
+				delegateContract.getDelegateInfo(arg.getParameter("nodeId"),arg.getParameter("delAddr"), stakingBlockNum).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

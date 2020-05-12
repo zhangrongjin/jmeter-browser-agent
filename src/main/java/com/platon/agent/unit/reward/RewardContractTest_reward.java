@@ -8,6 +8,11 @@ import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.TransactionResponse;
 
+/**
+ * 提取待提取委托
+ * @author Rongjin Zhang
+ *
+ */
 public class RewardContractTest_reward extends BaseSampler {
 	
 	/**
@@ -21,7 +26,7 @@ public class RewardContractTest_reward extends BaseSampler {
 		
 		String result = null;
 		try {
-			TransactionResponse res = rewardContract.withdrawDelegateReward().send();
+			TransactionResponse res = rewardContract.withdrawDelegateReward(gasProvider).send();
 			result = res.toString();
 			if(res.isStatusOk()) {
 				sr.setSuccessful(true);

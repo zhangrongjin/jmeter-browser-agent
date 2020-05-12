@@ -19,6 +19,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.platon.agent.check.RestrictingBalance;
 import com.platon.agent.check.SpecialApi;
 
+/**
+ * 查询余额
+ * @author Rongjin Zhang
+ *
+ */
 public class Test_getBalance extends AbstractJavaSamplerClient {
 	
 	public Arguments getDefaultParameters() {

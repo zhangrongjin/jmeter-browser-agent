@@ -12,6 +12,11 @@ import com.platon.agent.base.EpochInfo;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.agent.check.SpecialApi;
 
+/**
+ * 查询历史待提取收益
+ * @author Rongjin Zhang
+ *
+ */
 public class StakingContractTest_historyReward extends BaseSampler {
 
 	/**

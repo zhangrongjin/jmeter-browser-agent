@@ -24,7 +24,7 @@ public class SlashContractTest_reportDuplicateSign extends BaseSampler {
 		sr.sampleStart();
 		try {
 			PlatonSendTransaction platonSendTransaction = 
-				slashContract.reportDoubleSignReturnTransaction(DuplicateSignType.PREPARE_BLOCK, arg.getParameter("data")).send();
+				slashContract.reportDoubleSignReturnTransaction(DuplicateSignType.PREPARE_BLOCK, arg.getParameter("data"),gasProvider).send();
 			BaseResponse baseResponse = slashContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

@@ -22,7 +22,7 @@ public class StakingContractTest_unStaking extends BaseSampler {
 		sr.sampleStart();
 		try {
 			String nodeId = arg.getParameter("nodeId");
-			PlatonSendTransaction platonSendTransaction = stakingContract.unStakingReturnTransaction(nodeId).send();
+			PlatonSendTransaction platonSendTransaction = stakingContract.unStakingReturnTransaction(nodeId,gasProvider).send();
 			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

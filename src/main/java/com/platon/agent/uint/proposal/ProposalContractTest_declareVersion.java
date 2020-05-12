@@ -22,7 +22,7 @@ public class ProposalContractTest_declareVersion extends BaseSampler {
 		try {
 			String verifier = arg.getParameter("nodeId");
 			ProgramVersion programVersion = web3j.getProgramVersion().send().getAdminProgramVersion();
-            BaseResponse baseResponse = proposalContract.declareVersion(programVersion,verifier).send();
+            BaseResponse baseResponse = proposalContract.declareVersion(programVersion,verifier,gasProvider).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

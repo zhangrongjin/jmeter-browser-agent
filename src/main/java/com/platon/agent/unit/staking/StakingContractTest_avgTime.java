@@ -8,11 +8,13 @@ import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
+/**
+ * 查询当前的出块平均时间
+ * @author Rongjin Zhang
+ *
+ */
 public class StakingContractTest_avgTime extends BaseSampler {
 
-	/**
-	 * 查询当前节点的质押信息 nodeId 被质押的节点的NodeId
-	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();

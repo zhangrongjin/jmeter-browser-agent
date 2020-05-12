@@ -8,6 +8,11 @@ import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.agent.contract.ErrContract;
 
+/**
+ * 错误合约创建
+ * @author Rongjin Zhang
+ *
+ */
 public class ErrContractTest_create extends BaseSampler {
 	
 	

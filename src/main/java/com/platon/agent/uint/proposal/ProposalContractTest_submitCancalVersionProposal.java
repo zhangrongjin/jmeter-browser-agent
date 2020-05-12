@@ -12,6 +12,11 @@ import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 
+/**
+ * 提交取消提案
+ * @author Rongjin Zhang
+ *
+ */
 public class ProposalContractTest_submitCancalVersionProposal extends BaseSampler {
 	
 	@Override
@@ -24,7 +29,7 @@ public class ProposalContractTest_submitCancalVersionProposal extends BaseSample
 			String pIDID = arg.getParameter("pIDID");
         	Proposal proposal = Proposal.createSubmitCancelProposalParam(nodeId, pIDID, BigInteger.valueOf(1),
         			arg.getParameter("proposalHash"));
-        	PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal).send();
+        	PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal,gasProvider).send();
             BaseResponse baseResponse = proposalContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

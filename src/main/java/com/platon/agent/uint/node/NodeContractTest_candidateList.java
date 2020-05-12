@@ -12,6 +12,11 @@ import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.CallResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Node;
 
+/**
+ * 查询所有候选人列表
+ * @author Rongjin Zhang
+ *
+ */
 public class NodeContractTest_candidateList extends BaseSampler {
 	
 

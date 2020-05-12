@@ -28,7 +28,7 @@ public class ProposalContractTest_submitVersionProposal extends BaseSampler {
 			BigInteger newVersion =  BigInteger.valueOf(Long.parseLong(arg.getParameter("newVersion")));
         	BigInteger endVotingRounds =  BigInteger.valueOf(Long.parseLong(arg.getParameter("endVotingRounds")));
             Proposal proposal = Proposal.createSubmitVersionProposalParam(nodeId, pIDID, newVersion, endVotingRounds);
-            PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal).send();
+            PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal,gasProvider).send();
             BaseResponse baseResponse = proposalContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

@@ -30,7 +30,7 @@ public class StakingContractTest_addStaking extends BaseSampler {
 			String nodeId = arg.getParameter("nodeId");
 			BigDecimal addStakingAmount = Convert.toVon( arg.getParameter("stakingAmount"), Unit.LAT);
 			PlatonSendTransaction platonSendTransaction = stakingContract.addStakingReturnTransaction(nodeId,
-					StakingAmountType.FREE_AMOUNT_TYPE, addStakingAmount.toBigInteger()).send();
+					StakingAmountType.FREE_AMOUNT_TYPE, addStakingAmount.toBigInteger(),gasProvider).send();
 			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

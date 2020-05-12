@@ -12,12 +12,12 @@ import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.CallResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Node;
 
+/**
+ * 查询当前结算周期的验证人队列
+ */
 public class NodeContractTest_verifierList extends BaseSampler {
 	
 
-	/**
-	 * 查询当前结算周期的验证人队列
-	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();

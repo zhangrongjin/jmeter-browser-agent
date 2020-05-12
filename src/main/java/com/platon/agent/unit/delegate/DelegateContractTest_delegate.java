@@ -33,7 +33,7 @@ public class DelegateContractTest_delegate extends BaseSampler {
 
 			PlatonSendTransaction platonSendTransaction = 
 					delegateContract.delegateReturnTransaction(
-							arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger()).send();
+							arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger(),gasProvider).send();
 			BaseResponse baseResponse = delegateContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

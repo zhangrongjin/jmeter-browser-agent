@@ -15,7 +15,7 @@ public class ProposalContractTest_submitVoteProposal extends BaseSampler {
 	
 	
 	/**
-	 * 提交文本提案
+	 * 提交提案投票
 	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
@@ -40,7 +40,7 @@ public class ProposalContractTest_submitVoteProposal extends BaseSampler {
 			}
 			String nodeId = arg.getParameter("nodeId");
 			ProgramVersion pv = web3j.getProgramVersion().send().getAdminProgramVersion();
-            BaseResponse baseResponse = proposalContract.vote(pv ,voteOption,arg.getParameter("proposalHash"),nodeId).send();
+            BaseResponse baseResponse = proposalContract.vote(pv ,voteOption,arg.getParameter("proposalHash"),nodeId,gasProvider).send();
             result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

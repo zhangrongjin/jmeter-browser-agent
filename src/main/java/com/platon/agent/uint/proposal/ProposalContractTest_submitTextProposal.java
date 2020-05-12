@@ -22,7 +22,7 @@ public class ProposalContractTest_submitTextProposal extends BaseSampler {
 		try {
 			sr.sampleStart();
 			Proposal proposal = Proposal.createSubmitTextProposalParam(arg.getParameter("nodeId"),arg.getParameter("pIDID"));
-            PlatonSendTransaction transaction = proposalContract.submitProposalReturnTransaction(proposal).send();
+            PlatonSendTransaction transaction = proposalContract.submitProposalReturnTransaction(proposal,gasProvider).send();
             BaseResponse baseResponse = proposalContract.getTransactionResponse(transaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {

@@ -1,27 +1,24 @@
 package com.platon.agent.unit;
 
 
-import java.io.File;
-
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.WalletUtils;
+
+import com.platon.sdk.utlis.Bech32;
+import com.platon.sdk.utlis.NetworkParameters;
 
 /**
- * 根据私钥创建钱包
+ * 钱包地址转换
  * @author Rongjin Zhang
  *
  */
-public class Test_createwalletByPri extends AbstractJavaSamplerClient {
+public class Test_to_bech32 extends AbstractJavaSamplerClient {
 	
 	public Arguments getDefaultParameters() {
 		Arguments params = new Arguments();
-		params.addArgument("url", "D:\\");
-		params.addArgument("password", "88888888");
-		params.addArgument("privateKey", "88888888");
+		params.addArgument("address", "0x60ceca9c1290ee56b98d4e160ef0453f7c40d219");
 		return params;
 	}
 	@Override
@@ -30,8 +27,9 @@ public class Test_createwalletByPri extends AbstractJavaSamplerClient {
 		sr.sampleStart();
 		String result = null;
 		try {
-			Credentials credentials = Credentials.create(arg0.getParameter("privateKey"));
-			result = WalletUtils.generateWalletFile(arg0.getParameter("password"), credentials.getEcKeyPair(), new File(arg0.getParameter("url")), true);
+			String testAddr = Bech32.addressEncode(NetworkParameters.TestNetParams.getHrp(),arg0.getParameter("address"));
+			String mainAddr = Bech32.addressEncode(NetworkParameters.MainNetParams.getHrp(),arg0.getParameter("address"));
+			result = "testAddr:" + testAddr + ";" + "mainAddr:"+ mainAddr; 
 			sr.setSuccessful(true);
 		} catch (Exception e) {
 			result = e.getMessage();
@@ -49,7 +47,7 @@ public class Test_createwalletByPri extends AbstractJavaSamplerClient {
 		params.addArgument("url", "D:\\");
 		params.addArgument("password", "88888888");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
-		Test_createwalletByPri test = new Test_createwalletByPri();
+		Test_to_bech32 test = new Test_to_bech32();
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());
 	}

@@ -36,7 +36,7 @@ public class StakingContractTest_updateStakingInfo extends BaseSampler {
 			PlatonSendTransaction platonSendTransaction = stakingContract.updateStakingInfoReturnTransaction(
 					new UpdateStakingParam.Builder().setBenifitAddress(benifitAddress).setExternalId(externalId)
 							.setNodeId(nodeId).setNodeName(nodeName).setWebSite(webSite).setRewardPer(new BigInteger(rewardPer))
-							.setDetails(details).build())
+							.setDetails(details).build(),gasProvider)
 					.send();
 
 			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();

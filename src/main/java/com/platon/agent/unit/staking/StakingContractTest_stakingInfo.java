@@ -8,6 +8,11 @@ import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
+/**
+ * 查询质押信息
+ * @author Rongjin Zhang
+ *
+ */
 public class StakingContractTest_stakingInfo extends BaseSampler {
 
 	/**
@@ -41,8 +46,10 @@ public class StakingContractTest_stakingInfo extends BaseSampler {
 	public static void main(String[] args) {
 		Arguments params = new Arguments();
 		params.addArgument("url", "http://192.168.112.171:6789");
-		params.addArgument("stakingPrivateKey", "0x690a32ceb7eab4131f7be318c1672d3b9b2dadeacba20b99432a7847c1e926e0");
-		params.addArgument("chainId", "100");
+		params.addArgument("fromPrivateKey", "a689f0879f53710e9e0c1025af410a530d6381eebb5916773195326e123b822b");
+		params.addArgument("chainId", "108");
+		params.addArgument("gasPrice", "1000000000");
+		params.addArgument("gasLimit", "4700000");
 		params.addArgument("nodeId", "0x0aa9805681d8f77c05f317efc141c97d5adb511ffb51f5a251d2d7a4a3a96d9a12adf39f06b702f0ccdff9eddc1790eb272dca31b0c47751d49b5931c58701e7");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		StakingContractTest_stakingInfo test = new StakingContractTest_stakingInfo();

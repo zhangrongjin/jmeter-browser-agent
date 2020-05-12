@@ -12,12 +12,13 @@ import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.resp.Reward;
 
+/**
+ * 查询待提取委托奖励
+ * @author Rongjin Zhang
+ *
+ */
 public class RewardContractTest_queryReward extends BaseSampler {
 	
-	/**
-	 * 发起委托 typ 表示使用账户自由金额还是账户的锁仓金额做委托，0: 自由金额； 1: 锁仓金额 nodeId 被质押的节点的NodeId amount
-	 * 委托的金额(按照最小单位算，1LAT = 10**18 von)
-	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();

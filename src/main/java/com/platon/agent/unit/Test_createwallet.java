@@ -9,6 +9,11 @@ import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.crypto.WalletUtils;
 
+/**
+ * 创建钱包
+ * @author Rongjin Zhang
+ *
+ */
 public class Test_createwallet extends AbstractJavaSamplerClient {
 	
 	public Arguments getDefaultParameters() {

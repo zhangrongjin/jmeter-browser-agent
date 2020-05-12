@@ -12,11 +12,12 @@ import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.CallResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Node;
 
+/**
+ * 查询当前共识周期的验证人列表
+ */
 public class NodeContractTest_validatorList extends BaseSampler {
 	
-	/**
-	 * 查询当前共识周期的验证人列表
-	 */
+
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();

@@ -8,6 +8,11 @@ import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
+/**
+ * 查询当前打包收益
+ * @author Rongjin Zhang
+ *
+ */
 public class StakingContractTest_packageReward extends BaseSampler {
 
 	/**

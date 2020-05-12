@@ -60,7 +60,7 @@ public class StakingContractTest_staking extends BaseSampler {
 							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey)
 							.setRewardPer(new BigInteger(rewardPer))
 							.setProcessVersion(web3j.getProgramVersion().send().getAdminProgramVersion())
-				               .setBlsProof(web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build())
+				               .setBlsProof(web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build(),gasProvider)
 					.send();
 			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();

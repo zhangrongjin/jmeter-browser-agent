@@ -9,6 +9,11 @@ import org.bouncycastle.util.encoders.Hex;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 
+/**
+ * 获取节点钱包私钥
+ * @author Rongjin Zhang
+ *
+ */
 public class Test_amountkey extends AbstractJavaSamplerClient {
 	
 	public Arguments getDefaultParameters() {

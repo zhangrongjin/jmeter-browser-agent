@@ -12,7 +12,11 @@ import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 import com.platon.sdk.contracts.ppos.dto.CallResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 
-
+/**
+ * 查询提案列表
+ * @author Rongjin Zhang
+ *
+ */
 public class ProposalContractTest_listProposal extends BaseSampler {
 	
 	

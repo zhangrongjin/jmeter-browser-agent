@@ -1,40 +1,21 @@
 package com.platon.agent.unit.contract;
 
-import java.math.BigInteger;
-
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
-import org.web3j.crypto.Credentials;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.RawTransactionManager;
-import org.web3j.tx.TransactionManager;
-import org.web3j.tx.gas.ContractGasProvider;
-import org.web3j.tx.gas.GasProvider;
 
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.agent.contract.Destory_contract;
 
+/**
+ * wasm创建失败合约
+ * @author Rongjin Zhang
+ *
+ */
 public class WASMErrContractTest_create extends BaseSampler {
 	
-	private Web3j web3j;
-	private Credentials credentials;
-	protected TransactionManager transactionManager;
-	protected GasProvider gasProvider;
 	
-	public void setupTest(JavaSamplerContext arg) {
-		web3j = Web3j.build(new HttpService(arg.getParameter("url")));
-		credentials = Credentials.create(arg.getParameter("addressPrivateKey"));
-		transactionManager = new RawTransactionManager(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
-		gasProvider = new ContractGasProvider(new BigInteger(arg.getParameter("gasPrice")), new BigInteger(arg.getParameter("gasLimit")));
-	}
-	
-	/**
-	 * 发起委托 typ 表示使用账户自由金额还是账户的锁仓金额做委托，0: 自由金额； 1: 锁仓金额 nodeId 被质押的节点的NodeId amount
-	 * 委托的金额(按照最小单位算，1LAT = 10**18 von)
-	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();

@@ -10,21 +10,13 @@ import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 
+/**
+ * 提交参数提案
+ * @author Rongjin Zhang
+ *
+ */
 public class ProposalContractTest_submitParamsProposal extends BaseSampler {
 	
-	public Arguments getDefaultParameters() {
-		Arguments params = new Arguments();
-		params.addArgument("url", "http://192.168.112.172:8789");
-		params.addArgument("stakingPrivateKey", "a689f0879f53710e9e0c1025af410a530d6381eebb5916773195326e123b822b");
-		params.addArgument("nodeId", "0x0aa9805681d8f77c05f317efc141c97d5adb511ffb51f5a251d2d7a4a3a96d9a12adf39f06b702f0ccdff9eddc1790eb272dca31b0c47751d49b5931c58701e7");
-		params.addArgument("chainId", "100");
-		params.addArgument("pIDID", "8");
-		params.addArgument("module", "staking");
-		params.addArgument("name", "maxValidators");
-		params.addArgument("value", "5");
-		return params;
-	}
-    
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();
@@ -37,7 +29,7 @@ public class ProposalContractTest_submitParamsProposal extends BaseSampler {
 			String name = arg.getParameter("name");
 			String value = arg.getParameter("value");
         	Proposal proposal = Proposal.createSubmitParamProposalParam(nodeId, pIDID, module, name,value);
-        	PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal).send();
+        	PlatonSendTransaction platonSendTransaction = proposalContract.submitProposalReturnTransaction(proposal,gasProvider).send();
             BaseResponse baseResponse = proposalContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
