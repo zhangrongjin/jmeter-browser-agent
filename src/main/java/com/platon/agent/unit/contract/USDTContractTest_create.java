@@ -2,7 +2,7 @@ package com.platon.agent.unit.contract;
 
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.agent.contract.HumanStandardToken;
+import com.platon.agent.contract.USDT;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -14,7 +14,7 @@ import java.math.BigInteger;
  * @author Rongjin Zhang
  *
  */
-public class ContractTest_create extends BaseSampler {
+public class USDTContractTest_create extends BaseSampler {
 	
 	
 	@Override
@@ -24,15 +24,15 @@ public class ContractTest_create extends BaseSampler {
 		
 		String result = null;
 		try {
-			BigInteger initialAmount = BigInteger.valueOf(10000000000000L);
-			String tokenName = "My Token";
-			BigInteger decimal = BigInteger.valueOf(2L);
-			String tokenSymbol = "MT";
+			BigInteger initialAmount = new BigInteger(arg.getParameter("initialAmount"));
+			String tokenName =  arg.getParameter("tokenName");
+			BigInteger decimal = new BigInteger(arg.getParameter("decimal"));
+			String tokenSymbol = arg.getParameter("tokenSymbol");
 
-			HumanStandardToken humanStandardToken = HumanStandardToken.deploy(this.web3j, this.transactionManager, this.gasProvider, initialAmount, tokenName, decimal, tokenSymbol, this.chainId)
+			USDT usdt = USDT.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId,initialAmount,tokenName,tokenSymbol,decimal )
 					.send();
-			String contractAddress = humanStandardToken.getContractAddress();
-			String transactionHash = humanStandardToken.getTransactionReceipt().get().getTransactionHash();
+			String contractAddress = usdt.getContractAddress();
+			String transactionHash = usdt.getTransactionReceipt().get().getTransactionHash();
 			result += "合约发布成功，合约地址：" + contractAddress + "；交易hash："+transactionHash;
 			sr.setSuccessful(true);
 		} catch (Exception e) {
@@ -53,8 +53,12 @@ public class ContractTest_create extends BaseSampler {
 		params.addArgument("gasPrice", "1000000000");
 		params.addArgument("gasLimit", "4700000");
 		params.addArgument("chainId", "100");
+		params.addArgument("initialAmount", "10000000000000");
+		params.addArgument("tokenName", "My Token");
+		params.addArgument("decimal", "2");
+		params.addArgument("tokenSymbol", "MT");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
-		ContractTest_create test = new ContractTest_create();
+		USDTContractTest_create test = new USDTContractTest_create();
 		test.setupTest(arg0);
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());
@@ -67,7 +71,10 @@ public class ContractTest_create extends BaseSampler {
 
 	@Override
 	public void setArguments(Arguments params) {
-		
+		params.addArgument("initialAmount", "10000000000000");
+		params.addArgument("tokenName", "My Token");
+		params.addArgument("decimal", "2");
+		params.addArgument("tokenSymbol", "MT");
 	}
 	 
 

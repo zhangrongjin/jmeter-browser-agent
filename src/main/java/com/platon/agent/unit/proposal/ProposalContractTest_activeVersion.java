@@ -1,33 +1,32 @@
-package com.platon.agent.uint.node;
-
-import java.util.List;
+package com.platon.agent.unit.proposal;
 
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
-import com.alibaba.fastjson.JSON;
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.CallResponse;
-import com.platon.sdk.contracts.ppos.dto.resp.Node;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 
-/**
- * 查询当前结算周期的验证人队列
- */
-public class NodeContractTest_verifierList extends BaseSampler {
+public class ProposalContractTest_activeVersion extends BaseSampler {
 	
-
+	
+	/**
+	 * 查询节点的链生效版本
+	 */
 	@Override
 	public SampleResult runTest(JavaSamplerContext arg) {
 		SampleResult sr = new SampleResult();
 		String result = null;
+		sr.sampleStart();
 		try {
-			sr.sampleStart();
-			CallResponse<List<Node>> baseResponse = nodeContract.getVerifierList().send();
-			List<Node> nodeList = baseResponse.getData();
-			result = JSON.toJSONString(nodeList, true);
-			sr.setSuccessful(true);
+			BaseResponse baseResponse = this.proposalContract.getActiveVersion().send();
+			result = baseResponse.toString();
+			if(baseResponse.isStatusOk()) {
+				sr.setSuccessful(true);
+			} else {
+				sr.setSuccessful(false);
+			}
 		} catch (Exception e) {
 			result = e.getMessage();
 			sr.setSuccessful(false);
@@ -42,9 +41,10 @@ public class NodeContractTest_verifierList extends BaseSampler {
 	public static void main(String[] args) {
 		Arguments params = new Arguments();
 		params.addArgument("url", "http://192.168.112.171:6789");
+		params.addArgument("stakingPrivateKey", "4484092b68df58d639f11d59738983e2b8b81824f3c0c759edd6773f9adadfe7");
 		params.addArgument("chainId", "100");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
-		NodeContractTest_verifierList test = new NodeContractTest_verifierList();
+		ProposalContractTest_activeVersion test = new ProposalContractTest_activeVersion();
 		test.setupTest(arg0);
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());
@@ -52,15 +52,13 @@ public class NodeContractTest_verifierList extends BaseSampler {
 
 	@Override
 	public InnerContractAddrEnum getType() {
-		return InnerContractAddrEnum.NODE_CONTRACT;
+		return InnerContractAddrEnum.PROPOSAL_CONTRACT;
 	}
 
 
 	@Override
 	public void setArguments(Arguments params) {
-		// TODO Auto-generated method stub
-		
 	}
-	
+	 
 
 }

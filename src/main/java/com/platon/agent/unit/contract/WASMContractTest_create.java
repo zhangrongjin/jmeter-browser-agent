@@ -25,7 +25,7 @@ public class WASMContractTest_create extends BaseSampler {
 			 /**
              * 交易成功的合约场景
              */
-            ContractDistory contractDistory = ContractDistory.deploy(web3j, transactionManager, gasProvider).send();
+            ContractDistory contractDistory = ContractDistory.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
             String contractAddress = contractDistory.getContractAddress();
             String transactionHash = contractDistory.getTransactionReceipt().get().getTransactionHash();
 

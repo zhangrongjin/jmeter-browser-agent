@@ -31,7 +31,7 @@ public class Test_createwalletByPri extends AbstractJavaSamplerClient {
 		String result = null;
 		try {
 			Credentials credentials = Credentials.create(arg0.getParameter("privateKey"));
-			result = WalletUtils.generateWalletFile(arg0.getParameter("password"), credentials.getEcKeyPair(), new File(arg0.getParameter("url")), true);
+			result = WalletUtils.generatePlatONWalletFile(arg0.getParameter("password"), credentials.getEcKeyPair(), new File(arg0.getParameter("url")));
 			sr.setSuccessful(true);
 		} catch (Exception e) {
 			result = e.getMessage();

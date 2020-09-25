@@ -23,7 +23,7 @@ public class DestroyContractTest_execute extends BaseSampler {
 		
 		String result = null;
 		try {
-			SuicideAndSelfdestruct suicideAndSelfdestruct = SuicideAndSelfdestruct.deploy(web3j, transactionManager, gasProvider).send();
+			SuicideAndSelfdestruct suicideAndSelfdestruct = SuicideAndSelfdestruct.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
 			TransactionReceipt receipt = suicideAndSelfdestruct.kill().send();
 			String transactionHash = receipt.getTransactionHash();
 			result += "合约调用成功，交易hash："+transactionHash;

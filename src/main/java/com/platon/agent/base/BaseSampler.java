@@ -1,8 +1,8 @@
 package com.platon.agent.base;
 
 
-import java.math.BigInteger;
-
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.*;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
@@ -14,14 +14,7 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.GasProvider;
 
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.DelegateContract;
-import com.platon.sdk.contracts.ppos.NodeContract;
-import com.platon.sdk.contracts.ppos.ProposalContract;
-import com.platon.sdk.contracts.ppos.RestrictingPlanContract;
-import com.platon.sdk.contracts.ppos.RewardContract;
-import com.platon.sdk.contracts.ppos.SlashContract;
-import com.platon.sdk.contracts.ppos.StakingContract;
+import java.math.BigInteger;
 
 /**
  * 基础设置类
@@ -42,6 +35,7 @@ public abstract class BaseSampler extends AbstractJavaSamplerClient {
 	protected RewardContract rewardContract;
 	protected SlashContract slashContract;
 	protected StakingContract stakingContract;
+	protected Long chainId;
 	
 	public Arguments getDefaultParameters() {
 		Arguments params = new Arguments();
@@ -56,31 +50,32 @@ public abstract class BaseSampler extends AbstractJavaSamplerClient {
 
 	
 	public void setupTest(JavaSamplerContext arg) {
-		web3j = Web3j.build(new HttpService(arg.getParameter("url")));
-		gasProvider = new ContractGasProvider(new BigInteger(arg.getParameter("gasPrice")), new BigInteger(arg.getParameter("gasLimit")));
-		credentials = Credentials.create(arg.getParameter("fromPrivateKey"));
-		transactionManager = new RawTransactionManager(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
+		this.chainId = Long.valueOf(arg.getParameter("chainId"));
+		this.web3j = Web3j.build(new HttpService(arg.getParameter("url")));
+		this.gasProvider = new ContractGasProvider(new BigInteger(arg.getParameter("gasPrice")), new BigInteger(arg.getParameter("gasLimit")));
+		this.credentials = Credentials.create(arg.getParameter("fromPrivateKey"));
+		this.transactionManager = new RawTransactionManager(this.web3j, this.credentials, this.chainId);
 		switch (this.getType()) {
 		case DELEGATE_CONTRACT:
-			delegateContract = DelegateContract.load(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.delegateContract = DelegateContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		case NODE_CONTRACT:
-			nodeContract = NodeContract.load(web3j,credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.nodeContract = NodeContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		case PROPOSAL_CONTRACT:
-			proposalContract = ProposalContract.load(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.proposalContract = ProposalContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		case RESTRICTING_PLAN_CONTRACT:
-			restrictingPlanContract = RestrictingPlanContract.load(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.restrictingPlanContract = RestrictingPlanContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		case REWARD_CONTRACT:
-			rewardContract = RewardContract.load(web3j,credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.rewardContract = RewardContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		case SLASH_CONTRACT:
-			slashContract = SlashContract.load(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.slashContract = SlashContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		case STAKING_CONTRACT:
-			stakingContract = StakingContract.load(web3j, credentials, Long.valueOf(arg.getParameter("chainId")));
+			this.stakingContract = StakingContract.load(this.web3j, this.credentials, this.chainId);
 			break;
 		default:
 			break;

@@ -1,7 +1,9 @@
 package com.platon.agent.unit.delegate;
 
-import java.math.BigDecimal;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -9,10 +11,7 @@ import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
-import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
+import java.math.BigDecimal;
 
 public class DelegateContractTest_delegate extends BaseSampler {
 	
@@ -28,13 +27,17 @@ public class DelegateContractTest_delegate extends BaseSampler {
 		
 		String result = null;
 		try {
+			String type = arg.getParameter("type");
 			StakingAmountType stakingAmountType = StakingAmountType.FREE_AMOUNT_TYPE;
+			if(type.equals("1")) {
+				stakingAmountType = StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+			}
 			BigDecimal stakingAmount = Convert.toVon(arg.getParameter("amount"), Unit.LAT);
 
-			PlatonSendTransaction platonSendTransaction = 
-					delegateContract.delegateReturnTransaction(
-							arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger(),gasProvider).send();
-			BaseResponse baseResponse = delegateContract.getTransactionResponse(platonSendTransaction).send();
+			PlatonSendTransaction platonSendTransaction =
+					this.delegateContract.delegateReturnTransaction(
+							arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger(), this.gasProvider).send();
+			BaseResponse baseResponse = this.delegateContract.getTransactionResponse(platonSendTransaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);
@@ -79,6 +82,7 @@ public class DelegateContractTest_delegate extends BaseSampler {
 	public void setArguments(Arguments params) {
 		params.addArgument("nodeId", "0x0aa9805681d8f77c05f317efc141c97d5adb511ffb51f5a251d2d7a4a3a96d9a12adf39f06b702f0ccdff9eddc1790eb272dca31b0c47751d49b5931c58701e7");
 		params.addArgument("amount", "5000");
+		params.addArgument("type", "2");
 	}
 	 
 

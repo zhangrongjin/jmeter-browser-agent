@@ -1,8 +1,5 @@
 package com.platon.agent.contract;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
@@ -14,6 +11,10 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.GasProvider;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * <p>Auto generated code.
@@ -34,22 +35,12 @@ public class ErrContract extends Contract {
 
     public static final String FUNC_INCREMENT = "increment";
 
-    @Deprecated
-    protected ErrContract(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
+    protected ErrContract(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider,Long chainId) {
+        super(BINARY, contractAddress, web3j, credentials, contractGasProvider,chainId);
     }
 
-    protected ErrContract(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
-        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
-    }
-
-    @Deprecated
-    protected ErrContract(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-    }
-
-    protected ErrContract(String contractAddress, Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider) {
-        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+    protected ErrContract(String contractAddress, Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider,Long chainId) {
+        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider,chainId);
     }
 
     public RemoteCall<TransactionReceipt> kill() {
@@ -75,39 +66,19 @@ public class ErrContract extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public static RemoteCall<ErrContract> deploy(Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
-        return deployRemoteCall(ErrContract.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<ErrContract> deploy(Web3j web3j, Credentials credentials, GasProvider contractGasProvider,Long chainId) {
+        return deployRemoteCall(ErrContract.class, web3j, credentials, contractGasProvider, BINARY, "",chainId);
     }
 
-    public static RemoteCall<ErrContract> deploy(Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider) {
-        return deployRemoteCall(ErrContract.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<ErrContract> deploy(Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider,Long chainId) {
+        return deployRemoteCall(ErrContract.class, web3j, transactionManager, contractGasProvider, BINARY, "",chainId);
     }
 
-    @Deprecated
-    public static RemoteCall<ErrContract> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(ErrContract.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static ErrContract load(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider,Long chainId) {
+        return new ErrContract(contractAddress, web3j, credentials, contractGasProvider,chainId);
     }
 
-    @Deprecated
-    public static RemoteCall<ErrContract> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(ErrContract.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
-    }
-
-    @Deprecated
-    public static ErrContract load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return new ErrContract(contractAddress, web3j, credentials, gasPrice, gasLimit);
-    }
-
-    @Deprecated
-    public static ErrContract load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return new ErrContract(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-    }
-
-    public static ErrContract load(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
-        return new ErrContract(contractAddress, web3j, credentials, contractGasProvider);
-    }
-
-    public static ErrContract load(String contractAddress, Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider) {
-        return new ErrContract(contractAddress, web3j, transactionManager, contractGasProvider);
+    public static ErrContract load(String contractAddress, Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider,Long chainId) {
+        return new ErrContract(contractAddress, web3j, transactionManager, contractGasProvider,chainId);
     }
 }

@@ -1,15 +1,14 @@
 package com.platon.agent.unit.contract;
 
-import java.math.BigInteger;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.agent.contract.HumanStandardToken;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.agent.contract.HumanStandardToken;
+import java.math.BigInteger;
 
 /**
  * 合约执行
@@ -25,7 +24,7 @@ public class ContractTest_execute extends BaseSampler {
 		
 		String result = null;
 		try {
-			HumanStandardToken humanStandardToken = HumanStandardToken.load(arg.getParameter("contractAddress"), web3j, transactionManager, gasProvider);
+			HumanStandardToken humanStandardToken = HumanStandardToken.load(arg.getParameter("contractAddress"), this.web3j, this.transactionManager, this.gasProvider, this.chainId);
 			TransactionReceipt receipt = humanStandardToken.transfer(arg.getParameter("toAddress"), new BigInteger(arg.getParameter("value")).multiply(BigInteger.valueOf(10^18))).send();
 			String transactionHash = receipt.getTransactionHash();
 			result += "合约调用成功，交易hash："+transactionHash;

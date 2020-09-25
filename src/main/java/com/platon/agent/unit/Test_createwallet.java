@@ -28,7 +28,7 @@ public class Test_createwallet extends AbstractJavaSamplerClient {
 		sr.sampleStart();
 		String result = null;
 		try {
-			result = WalletUtils.generateNewWalletFile(arg0.getParameter("password"), new File(arg0.getParameter("url")));
+			result = WalletUtils.generatePlatONWalletFile(arg0.getParameter("password"), new File(arg0.getParameter("url")));
 			sr.setSuccessful(true);
 		} catch (Exception e) {
 			result = e.getMessage();

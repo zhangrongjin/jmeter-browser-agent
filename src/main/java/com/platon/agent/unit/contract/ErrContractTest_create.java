@@ -27,7 +27,7 @@ public class ErrContractTest_create extends BaseSampler {
 		
 		String result = null;
 		try {
-			ErrContract errContract = ErrContract.deploy(web3j, transactionManager, gasProvider).send();
+			ErrContract errContract = ErrContract.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
 			String contractAddress = errContract.getContractAddress();
 			String transactionHash = errContract.getTransactionReceipt().get().getTransactionHash();
 			result += "合约发布成功，合约地址：" + contractAddress + "；交易hash："+transactionHash;

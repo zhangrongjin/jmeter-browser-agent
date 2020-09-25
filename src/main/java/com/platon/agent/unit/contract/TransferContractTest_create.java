@@ -22,7 +22,7 @@ public class TransferContractTest_create extends BaseSampler {
 		
 		String result = null;
 		try {
-			SuicideAndSelfdestruct suicideAndSelfdestruct = SuicideAndSelfdestruct.deploy(web3j, transactionManager, gasProvider).send();
+			SuicideAndSelfdestruct suicideAndSelfdestruct = SuicideAndSelfdestruct.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
 			String contractAddress = suicideAndSelfdestruct.getContractAddress();
 			String transactionHash = suicideAndSelfdestruct.getTransactionReceipt().get().getTransactionHash();
 			result += "合约发布成功，合约地址：" + contractAddress + "；交易hash："+transactionHash;

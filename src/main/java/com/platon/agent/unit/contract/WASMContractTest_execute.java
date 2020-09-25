@@ -24,7 +24,7 @@ public class WASMContractTest_execute extends BaseSampler {
 		
 		String result = null;
 		try {
-			ContractDistory contractDistory = ContractDistory.load(arg.getParameter("contractAddress"), web3j, transactionManager, gasProvider);
+			ContractDistory contractDistory = ContractDistory.load(arg.getParameter("contractAddress"), this.web3j, this.transactionManager, this.gasProvider, this.chainId);
 			TransactionReceipt receipt = contractDistory.distory_contract().send();
 			String transactionHash = receipt.getTransactionHash();
 			result += "合约调用成功，交易hash："+transactionHash;

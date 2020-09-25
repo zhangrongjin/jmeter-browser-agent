@@ -77,23 +77,12 @@ public class HumanStandardToken extends Contract {
 	}, new TypeReference<Uint256>() {
 	}));;
 
-	@Deprecated
-	protected HumanStandardToken(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-		super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
+	protected HumanStandardToken(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider,Long chainId) {
+		super(BINARY, contractAddress, web3j, credentials, contractGasProvider,chainId);
 	}
 
-	protected HumanStandardToken(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
-		super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
-	}
-
-	@Deprecated
-	protected HumanStandardToken(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice,
-			BigInteger gasLimit) {
-		super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-	}
-
-	protected HumanStandardToken(String contractAddress, Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider) {
-		super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+	protected HumanStandardToken(String contractAddress, Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider,Long chainId) {
+		super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider,chainId);
 	}
 
 	public RemoteCall<String> name() {
@@ -171,37 +160,19 @@ public class HumanStandardToken extends Contract {
 	}
 
 	public static RemoteCall<HumanStandardToken> deploy(Web3j web3j, Credentials credentials, GasProvider contractGasProvider,
-			BigInteger _initialAmount, String _tokenName, BigInteger _decimalUnits, String _tokenSymbol) {
+			BigInteger _initialAmount, String _tokenName, BigInteger _decimalUnits, String _tokenSymbol,Long chainId) {
 		String encodedConstructor = FunctionEncoder.encodeConstructor(
 				Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_initialAmount), new org.web3j.abi.datatypes.Utf8String(_tokenName),
 						new org.web3j.abi.datatypes.generated.Uint8(_decimalUnits), new org.web3j.abi.datatypes.Utf8String(_tokenSymbol)));
-		return deployRemoteCall(HumanStandardToken.class, web3j, credentials, contractGasProvider, BINARY, encodedConstructor);
+		return deployRemoteCall(HumanStandardToken.class, web3j, credentials, contractGasProvider, BINARY, encodedConstructor,chainId);
 	}
 
 	public static RemoteCall<HumanStandardToken> deploy(Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider,
-			BigInteger _initialAmount, String _tokenName, BigInteger _decimalUnits, String _tokenSymbol) {
+			BigInteger _initialAmount, String _tokenName, BigInteger _decimalUnits, String _tokenSymbol,Long chainId) {
 		String encodedConstructor = FunctionEncoder.encodeConstructor(
 				Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_initialAmount), new org.web3j.abi.datatypes.Utf8String(_tokenName),
 						new org.web3j.abi.datatypes.generated.Uint8(_decimalUnits), new org.web3j.abi.datatypes.Utf8String(_tokenSymbol)));
-		return deployRemoteCall(HumanStandardToken.class, web3j, transactionManager, contractGasProvider, BINARY, encodedConstructor);
-	}
-
-	@Deprecated
-	public static RemoteCall<HumanStandardToken> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit,
-			BigInteger _initialAmount, String _tokenName, BigInteger _decimalUnits, String _tokenSymbol) {
-		String encodedConstructor = FunctionEncoder.encodeConstructor(
-				Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_initialAmount), new org.web3j.abi.datatypes.Utf8String(_tokenName),
-						new org.web3j.abi.datatypes.generated.Uint8(_decimalUnits), new org.web3j.abi.datatypes.Utf8String(_tokenSymbol)));
-		return deployRemoteCall(HumanStandardToken.class, web3j, credentials, gasPrice, gasLimit, BINARY, encodedConstructor);
-	}
-
-	@Deprecated
-	public static RemoteCall<HumanStandardToken> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit,
-			BigInteger _initialAmount, String _tokenName, BigInteger _decimalUnits, String _tokenSymbol) {
-		String encodedConstructor = FunctionEncoder.encodeConstructor(
-				Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_initialAmount), new org.web3j.abi.datatypes.Utf8String(_tokenName),
-						new org.web3j.abi.datatypes.generated.Uint8(_decimalUnits), new org.web3j.abi.datatypes.Utf8String(_tokenSymbol)));
-		return deployRemoteCall(HumanStandardToken.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, encodedConstructor);
+		return deployRemoteCall(HumanStandardToken.class, web3j, transactionManager, contractGasProvider, BINARY, encodedConstructor,chainId);
 	}
 
 	public List<TransferEventResponse> getTransferEvents(TransactionReceipt transactionReceipt) {
@@ -219,7 +190,7 @@ public class HumanStandardToken extends Contract {
 	}
 
 	public Observable<TransferEventResponse> transferEventObservable(PlatonFilter filter) {
-		return web3j.platonLogObservable(filter).map(new Func1<Log, TransferEventResponse>() {
+		return this.web3j.platonLogObservable(filter).map(new Func1<Log, TransferEventResponse>() {
 			@Override
 			public TransferEventResponse call(Log log) {
 				Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFER_EVENT, log);
@@ -254,7 +225,7 @@ public class HumanStandardToken extends Contract {
 	}
 
 	public Observable<ApprovalEventResponse> approvalEventObservable(PlatonFilter filter) {
-		return web3j.platonLogObservable(filter).map(new Func1<Log, ApprovalEventResponse>() {
+		return this.web3j.platonLogObservable(filter).map(new Func1<Log, ApprovalEventResponse>() {
 			@Override
 			public ApprovalEventResponse call(Log log) {
 				Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(APPROVAL_EVENT, log);
@@ -274,24 +245,13 @@ public class HumanStandardToken extends Contract {
 		return approvalEventObservable(filter);
 	}
 
-	@Deprecated
-	public static HumanStandardToken load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-		return new HumanStandardToken(contractAddress, web3j, credentials, gasPrice, gasLimit);
-	}
-
-	@Deprecated
-	public static HumanStandardToken load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice,
-			BigInteger gasLimit) {
-		return new HumanStandardToken(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-	}
-
-	public static HumanStandardToken load(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
-		return new HumanStandardToken(contractAddress, web3j, credentials, contractGasProvider);
+	public static HumanStandardToken load(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider,Long chainId) {
+		return new HumanStandardToken(contractAddress, web3j, credentials, contractGasProvider,chainId);
 	}
 
 	public static HumanStandardToken load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
-			GasProvider contractGasProvider) {
-		return new HumanStandardToken(contractAddress, web3j, transactionManager, contractGasProvider);
+			GasProvider contractGasProvider,Long chainId) {
+		return new HumanStandardToken(contractAddress, web3j, transactionManager, contractGasProvider,chainId);
 	}
 
 	public static class TransferEventResponse {

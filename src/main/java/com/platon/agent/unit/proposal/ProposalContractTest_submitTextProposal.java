@@ -1,4 +1,4 @@
-package com.platon.agent.uint.proposal;
+package com.platon.agent.unit.proposal;
 
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
@@ -22,8 +22,8 @@ public class ProposalContractTest_submitTextProposal extends BaseSampler {
 		try {
 			sr.sampleStart();
 			Proposal proposal = Proposal.createSubmitTextProposalParam(arg.getParameter("nodeId"),arg.getParameter("pIDID"));
-            PlatonSendTransaction transaction = proposalContract.submitProposalReturnTransaction(proposal,gasProvider).send();
-            BaseResponse baseResponse = proposalContract.getTransactionResponse(transaction).send();
+            PlatonSendTransaction transaction = this.proposalContract.submitProposalReturnTransaction(proposal, this.gasProvider).send();
+            BaseResponse baseResponse = this.proposalContract.getTransactionResponse(transaction).send();
 			result = baseResponse.toString();
 			if(baseResponse.isStatusOk()) {
 				sr.setSuccessful(true);

@@ -26,7 +26,7 @@ public class WASMErrContractTest_create extends BaseSampler {
 			 /**
              * 交易成功的合约场景
              */
-			Destory_contract failContract = Destory_contract.deploy(web3j, transactionManager, gasProvider,"").send();
+			Destory_contract failContract = Destory_contract.deploy(this.web3j, this.transactionManager, this.gasProvider,"", this.chainId).send();
             String contractAddress = failContract.getContractAddress();
             String transactionHash = failContract.getTransactionReceipt().get().getTransactionHash();
 

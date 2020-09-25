@@ -1,4 +1,4 @@
-package com.platon.agent.uint.node;
+package com.platon.agent.unit.node;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class NodeContractTest_candidateList extends BaseSampler {
 		String result = null;
 		try {
 			sr.sampleStart();
-			CallResponse<List<Node>> baseResponse = nodeContract.getCandidateList().send();
+			CallResponse<List<Node>> baseResponse = this.nodeContract.getCandidateList().send();
 			List<Node> nodeList = baseResponse.getData();
 			result = JSON.toJSONString(nodeList, true);
 			sr.setSuccessful(true);
