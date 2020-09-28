@@ -1,5 +1,6 @@
 package com.platon.agent.unit.contract;
 
+import com.platon.agent.contract.ContractDistoryAlaya;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -24,9 +25,16 @@ public class WASMContractTest_execute extends BaseSampler {
 		
 		String result = null;
 		try {
-			ContractDistory contractDistory = ContractDistory.load(arg.getParameter("contractAddress"), this.web3j, this.transactionManager, this.gasProvider, this.chainId);
-			TransactionReceipt receipt = contractDistory.distory_contract().send();
-			String transactionHash = receipt.getTransactionHash();
+			String transactionHash ="";
+			if(this.chainType.equals(this.chainTypeP)) {
+				ContractDistory contractDistory = ContractDistory.load(arg.getParameter("contractAddress"), this.web3j, this.transactionManager, this.gasProvider, this.chainId);
+				TransactionReceipt receipt = contractDistory.distory_contract().send();
+				transactionHash = receipt.getTransactionHash();
+			} else {
+				ContractDistoryAlaya contractDistory = ContractDistoryAlaya.load(arg.getParameter("contractAddress"), this.web3jA, this.transactionManagerA, this.gasProviderA, this.chainId);
+				com.alaya.protocol.core.methods.response.TransactionReceipt receipt = contractDistory.distory_contract().send();
+				transactionHash = receipt.getTransactionHash();
+			}
 			result += "合约调用成功，交易hash："+transactionHash;
 			sr.setSuccessful(true);
 		} catch (Exception e) {

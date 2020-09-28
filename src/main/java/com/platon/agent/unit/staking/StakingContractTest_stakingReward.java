@@ -25,12 +25,22 @@ public class StakingContractTest_stakingReward extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse baseResponse = stakingContract.getStakingReward().send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.stakingContract.getStakingReward().send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.stakingContractA.getStakingReward().send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.toString();

@@ -3,6 +3,7 @@ package com.platon.agent.unit.contract;
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.agent.contract.HumanStandardToken;
+import com.platon.agent.contract.HumanStandardTokenAlaya;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -24,9 +25,16 @@ public class ContractTest_execute extends BaseSampler {
 		
 		String result = null;
 		try {
-			HumanStandardToken humanStandardToken = HumanStandardToken.load(arg.getParameter("contractAddress"), this.web3j, this.transactionManager, this.gasProvider, this.chainId);
-			TransactionReceipt receipt = humanStandardToken.transfer(arg.getParameter("toAddress"), new BigInteger(arg.getParameter("value")).multiply(BigInteger.valueOf(10^18))).send();
-			String transactionHash = receipt.getTransactionHash();
+			String transactionHash = "";
+			if(this.chainType.equals(this.chainTypeP)) {
+				HumanStandardToken humanStandardToken = HumanStandardToken.load(arg.getParameter("contractAddress"), this.web3j, this.transactionManager, this.gasProvider, this.chainId);
+				TransactionReceipt receipt = humanStandardToken.transfer(arg.getParameter("toAddress"), new BigInteger(arg.getParameter("value")).multiply(BigInteger.valueOf(10 ^ 18))).send();
+				transactionHash = receipt.getTransactionHash();
+			} else {
+				HumanStandardTokenAlaya humanStandardToken = HumanStandardTokenAlaya.load(arg.getParameter("contractAddress"), this.web3jA, this.transactionManagerA, this.gasProviderA, this.chainId);
+				com.alaya.protocol.core.methods.response.TransactionReceipt receipt = humanStandardToken.transfer(arg.getParameter("toAddress"), new BigInteger(arg.getParameter("value")).multiply(BigInteger.valueOf(10 ^ 18))).send();
+				transactionHash = receipt.getTransactionHash();
+			}
 			result += "合约调用成功，交易hash："+transactionHash;
 			sr.setSuccessful(true);
 		} catch (Exception e) {

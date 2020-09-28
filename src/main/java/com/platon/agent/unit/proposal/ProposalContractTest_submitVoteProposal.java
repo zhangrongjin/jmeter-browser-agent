@@ -23,29 +23,56 @@ public class ProposalContractTest_submitVoteProposal extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			VoteOption voteOption = null;
-			switch (arg.getParameter("voteoption")) {
-			case "1":
-				voteOption = VoteOption.YEAS;
-				break;
-			case "2":
-				voteOption = VoteOption.NAYS;
-				break;
-			case "3":
-				voteOption = VoteOption.ABSTENTIONS;
-				break;
-			default:
-				voteOption = VoteOption.YEAS;
-				break;
-			}
+
 			String nodeId = arg.getParameter("nodeId");
-			ProgramVersion pv = this.web3j.getProgramVersion().send().getAdminProgramVersion();
-            BaseResponse baseResponse = this.proposalContract.vote(pv ,voteOption,arg.getParameter("proposalHash"),nodeId, this.gasProvider).send();
-            result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				VoteOption voteOption = null;
+				switch (arg.getParameter("voteoption")) {
+					case "1":
+						voteOption = VoteOption.YEAS;
+						break;
+					case "2":
+						voteOption = VoteOption.NAYS;
+						break;
+					case "3":
+						voteOption = VoteOption.ABSTENTIONS;
+						break;
+					default:
+						voteOption = VoteOption.YEAS;
+						break;
+				}
+				ProgramVersion pv = this.web3j.getProgramVersion().send().getAdminProgramVersion();
+				BaseResponse baseResponse = this.proposalContract.vote(pv, voteOption, arg.getParameter("proposalHash"), nodeId, this.gasProvider).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else{
+				com.alaya.contracts.ppos.dto.enums.VoteOption voteOption = null;
+				switch (arg.getParameter("voteoption")) {
+					case "1":
+						voteOption = com.alaya.contracts.ppos.dto.enums.VoteOption.YEAS;
+						break;
+					case "2":
+						voteOption = com.alaya.contracts.ppos.dto.enums.VoteOption.NAYS;
+						break;
+					case "3":
+						voteOption = com.alaya.contracts.ppos.dto.enums.VoteOption.ABSTENTIONS;
+						break;
+					default:
+						voteOption = com.alaya.contracts.ppos.dto.enums.VoteOption.YEAS;
+						break;
+				}
+				com.alaya.protocol.core.methods.response.bean.ProgramVersion pv = this.web3jA.getProgramVersion().send().getAdminProgramVersion();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.proposalContractA.vote(pv, voteOption, arg.getParameter("proposalHash"), nodeId, this.gasProviderA).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

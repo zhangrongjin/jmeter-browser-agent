@@ -3,6 +3,7 @@ package com.platon.agent.unit.contract;
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.agent.contract.HumanStandardToken;
+import com.platon.agent.contract.HumanStandardTokenAlaya;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -28,11 +29,19 @@ public class ContractTest_create extends BaseSampler {
 			String tokenName = "My Token";
 			BigInteger decimal = BigInteger.valueOf(2L);
 			String tokenSymbol = "MT";
-
-			HumanStandardToken humanStandardToken = HumanStandardToken.deploy(this.web3j, this.transactionManager, this.gasProvider, initialAmount, tokenName, decimal, tokenSymbol, this.chainId)
-					.send();
-			String contractAddress = humanStandardToken.getContractAddress();
-			String transactionHash = humanStandardToken.getTransactionReceipt().get().getTransactionHash();
+			String contractAddress = "";
+			String transactionHash = "";
+			if(this.chainType.equals(this.chainTypeP)) {
+				HumanStandardToken humanStandardToken = HumanStandardToken.deploy(this.web3j, this.transactionManager, this.gasProvider, initialAmount, tokenName, decimal, tokenSymbol, this.chainId)
+						.send();
+				contractAddress = humanStandardToken.getContractAddress();
+				transactionHash = humanStandardToken.getTransactionReceipt().get().getTransactionHash();
+			} else {
+				HumanStandardTokenAlaya humanStandardToken = HumanStandardTokenAlaya.deploy(this.web3jA, this.transactionManagerA, this.gasProviderA, initialAmount, tokenName, decimal, tokenSymbol, this.chainId)
+						.send();
+				contractAddress = humanStandardToken.getContractAddress();
+				transactionHash = humanStandardToken.getTransactionReceipt().get().getTransactionHash();
+			}
 			result += "合约发布成功，合约地址：" + contractAddress + "；交易hash："+transactionHash;
 			sr.setSuccessful(true);
 		} catch (Exception e) {

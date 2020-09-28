@@ -21,13 +21,24 @@ public class ProposalContractTest_declareVersion extends BaseSampler {
 		sr.sampleStart();
 		try {
 			String verifier = arg.getParameter("nodeId");
-			ProgramVersion programVersion = this.web3j.getProgramVersion().send().getAdminProgramVersion();
-            BaseResponse baseResponse = this.proposalContract.declareVersion(programVersion,verifier, this.gasProvider).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				ProgramVersion programVersion = this.web3j.getProgramVersion().send().getAdminProgramVersion();
+				BaseResponse baseResponse = this.proposalContract.declareVersion(programVersion, verifier, this.gasProvider).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.protocol.core.methods.response.bean.ProgramVersion programVersion = this.web3jA.getProgramVersion().send().getAdminProgramVersion();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.proposalContractA.declareVersion(programVersion, verifier, this.gasProviderA).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

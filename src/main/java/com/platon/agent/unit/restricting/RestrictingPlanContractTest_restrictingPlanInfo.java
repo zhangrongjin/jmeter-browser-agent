@@ -23,13 +23,22 @@ public class RestrictingPlanContractTest_restrictingPlanInfo extends BaseSampler
 		sr.sampleStart();
 		try {
 			String address = arg.getParameter("address");
-			BaseResponse baseResponse = restrictingPlanContract.getRestrictingInfo(address).send();
-			result = baseResponse.toString();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.restrictingPlanContract.getRestrictingInfo(address).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.restrictingPlanContractA.getRestrictingInfo(address).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

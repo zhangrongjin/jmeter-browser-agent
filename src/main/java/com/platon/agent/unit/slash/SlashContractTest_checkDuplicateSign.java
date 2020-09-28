@@ -1,15 +1,14 @@
 package com.platon.agent.unit.slash;
 
-import java.math.BigInteger;
-
-import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
-import org.apache.jmeter.samplers.SampleResult;
-
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 import com.platon.sdk.contracts.ppos.dto.common.DuplicateSignType;
+import org.apache.jmeter.config.Arguments;
+import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
+import org.apache.jmeter.samplers.SampleResult;
+
+import java.math.BigInteger;
 
 public class SlashContractTest_checkDuplicateSign extends BaseSampler {
 
@@ -24,13 +23,24 @@ public class SlashContractTest_checkDuplicateSign extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse baseResponse = slashContract.checkDoubleSign(DuplicateSignType.PREPARE_BLOCK,
-					arg.getParameter("address"), new BigInteger(arg.getParameter("blockNumber"))).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.slashContract.checkDoubleSign(DuplicateSignType.PREPARE_BLOCK,
+						arg.getParameter("address"), new BigInteger(arg.getParameter("blockNumber"))).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.slashContractA.checkDoubleSign(com.alaya.contracts.ppos.dto.common.DuplicateSignType.PREPARE_BLOCK,
+						arg.getParameter("address"), new BigInteger(arg.getParameter("blockNumber"))).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

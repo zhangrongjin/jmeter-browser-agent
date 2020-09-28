@@ -1,14 +1,13 @@
 package com.platon.agent.unit.delegate;
 
-import java.math.BigInteger;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import java.math.BigInteger;
 
 /**
  * 委托详情
@@ -26,13 +25,24 @@ public class DelegateContractTest_delegateInfo extends BaseSampler {
 		String result = null;
 		try {
 			BigInteger stakingBlockNum = BigInteger.valueOf(Long.parseLong(arg.getParameter("stakingBlockNum")));
-			BaseResponse baseResponse = 
-				delegateContract.getDelegateInfo(arg.getParameter("nodeId"),arg.getParameter("delAddr"), stakingBlockNum).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse =
+						this.delegateContract.getDelegateInfo(arg.getParameter("nodeId"), arg.getParameter("delAddr"), stakingBlockNum).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse =
+						this.delegateContractA.getDelegateInfo(arg.getParameter("nodeId"), arg.getParameter("delAddr"), stakingBlockNum).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

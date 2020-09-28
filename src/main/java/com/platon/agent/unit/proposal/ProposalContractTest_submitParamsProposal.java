@@ -28,14 +28,26 @@ public class ProposalContractTest_submitParamsProposal extends BaseSampler {
 			String module = arg.getParameter("module");
 			String name = arg.getParameter("name");
 			String value = arg.getParameter("value");
-        	Proposal proposal = Proposal.createSubmitParamProposalParam(nodeId, pIDID, module, name,value);
-        	PlatonSendTransaction platonSendTransaction = this.proposalContract.submitProposalReturnTransaction(proposal, this.gasProvider).send();
-            BaseResponse baseResponse = this.proposalContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				Proposal proposal = Proposal.createSubmitParamProposalParam(nodeId, pIDID, module, name, value);
+				PlatonSendTransaction platonSendTransaction = this.proposalContract.submitProposalReturnTransaction(proposal, this.gasProvider).send();
+				BaseResponse baseResponse = this.proposalContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.resp.Proposal proposal = com.alaya.contracts.ppos.dto.resp.Proposal.createSubmitParamProposalParam(nodeId, pIDID, module, name, value);
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction = this.proposalContractA.submitProposalReturnTransaction(proposal, this.gasProviderA).send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.proposalContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

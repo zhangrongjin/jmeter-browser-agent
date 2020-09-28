@@ -20,12 +20,22 @@ public class ProposalContractTest_activeVersion extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse baseResponse = this.proposalContract.getActiveVersion().send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.proposalContract.getActiveVersion().send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.proposalContractA.getActiveVersion().send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

@@ -1,5 +1,6 @@
 package com.platon.agent.unit.contract;
 
+import com.platon.agent.contract.ErrContractAlaya;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -27,9 +28,17 @@ public class ErrContractTest_create extends BaseSampler {
 		
 		String result = null;
 		try {
-			ErrContract errContract = ErrContract.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
-			String contractAddress = errContract.getContractAddress();
-			String transactionHash = errContract.getTransactionReceipt().get().getTransactionHash();
+			String contractAddress;
+			String transactionHash;
+			if(this.chainType.equals(this.chainTypeP)) {
+				ErrContract errContract = ErrContract.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
+				contractAddress = errContract.getContractAddress();
+				transactionHash = errContract.getTransactionReceipt().get().getTransactionHash();
+			} else {
+				ErrContractAlaya errContract = ErrContractAlaya.deploy(this.web3jA, this.transactionManagerA, this.gasProviderA, this.chainId).send();
+				contractAddress = errContract.getContractAddress();
+				transactionHash = errContract.getTransactionReceipt().get().getTransactionHash();
+			}
 			result += "合约发布成功，合约地址：" + contractAddress + "；交易hash："+transactionHash;
 			sr.setSuccessful(true);
 		} catch (Exception e) {

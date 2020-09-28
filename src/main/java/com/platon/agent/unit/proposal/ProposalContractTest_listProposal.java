@@ -1,16 +1,15 @@
 package com.platon.agent.unit.proposal;
 
-import java.util.List;
-
-import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
-import org.apache.jmeter.samplers.SampleResult;
-
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.BaseResponse;
 import com.platon.sdk.contracts.ppos.dto.CallResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
+import org.apache.jmeter.config.Arguments;
+import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
+import org.apache.jmeter.samplers.SampleResult;
+
+import java.util.List;
 
 /**
  * 查询提案列表
@@ -26,12 +25,22 @@ public class ProposalContractTest_listProposal extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			CallResponse<List<Proposal>> baseResponse = this.proposalContract.getProposalList().send();
-            result = baseResponse.toString();
-            List<Proposal> proposalList = baseResponse.getData();
-            for (Proposal proposal : proposalList) {
-                BaseResponse resp = this.proposalContract.getTallyResult(proposal.getProposalId()).send();
-                result += ";" +resp.toString();
+			if(this.chainType.equals(this.chainTypeP)) {
+				CallResponse<List<Proposal>> baseResponse = this.proposalContract.getProposalList().send();
+				result = baseResponse.toString();
+				List<Proposal> proposalList = baseResponse.getData();
+				for (Proposal proposal : proposalList) {
+					BaseResponse resp = this.proposalContract.getTallyResult(proposal.getProposalId()).send();
+					result += ";" + resp.toString();
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.CallResponse<List<com.alaya.contracts.ppos.dto.resp.Proposal>> baseResponse = this.proposalContractA.getProposalList().send();
+				result = baseResponse.toString();
+				List<com.alaya.contracts.ppos.dto.resp.Proposal> proposalList = baseResponse.getData();
+				for (com.alaya.contracts.ppos.dto.resp.Proposal proposal : proposalList) {
+					BaseResponse resp = this.proposalContract.getTallyResult(proposal.getProposalId()).send();
+					result += ";" + resp.toString();
+				}
 			}
 			sr.setSuccessful(true);
 		} catch (Exception e) {

@@ -1,16 +1,15 @@
  package com.platon.agent.unit.proposal;
 
-import java.math.BigInteger;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
-import com.platon.sdk.contracts.ppos.dto.resp.Proposal;
+import java.math.BigInteger;
 
 public class ProposalContractTest_submitVersionProposal extends BaseSampler {
 	
@@ -27,14 +26,26 @@ public class ProposalContractTest_submitVersionProposal extends BaseSampler {
 			String pIDID = arg.getParameter("pIDID");
 			BigInteger newVersion =  BigInteger.valueOf(Long.parseLong(arg.getParameter("newVersion")));
         	BigInteger endVotingRounds =  BigInteger.valueOf(Long.parseLong(arg.getParameter("endVotingRounds")));
-            Proposal proposal = Proposal.createSubmitVersionProposalParam(nodeId, pIDID, newVersion, endVotingRounds);
-            PlatonSendTransaction platonSendTransaction = this.proposalContract.submitProposalReturnTransaction(proposal, this.gasProvider).send();
-            BaseResponse baseResponse = this.proposalContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				Proposal proposal = Proposal.createSubmitVersionProposalParam(nodeId, pIDID, newVersion, endVotingRounds);
+				PlatonSendTransaction platonSendTransaction = this.proposalContract.submitProposalReturnTransaction(proposal, this.gasProvider).send();
+				BaseResponse baseResponse = this.proposalContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.resp.Proposal proposal = com.alaya.contracts.ppos.dto.resp.Proposal.createSubmitVersionProposalParam(nodeId, pIDID, newVersion, endVotingRounds);
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction = this.proposalContractA.submitProposalReturnTransaction(proposal, this.gasProviderA).send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.proposalContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

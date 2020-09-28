@@ -1,10 +1,9 @@
 package com.platon.agent.unit.restricting;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.resp.RestrictingPlan;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -12,10 +11,10 @@ import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
-import com.platon.sdk.contracts.ppos.dto.resp.RestrictingPlan;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 锁仓计划接口，包括， 创建锁仓计划 获取锁仓信息
@@ -35,24 +34,46 @@ public class RestrictingPlanContractTest_createRestrictingPlan extends BaseSampl
 		String result = null;
 		sr.sampleStart();
 		try {
-            List<RestrictingPlan> restrictingPlans = new ArrayList<>();
-            String plan = arg.getParameter("plan");
-            String[] plans = plan.split(";");
-            for(String p:plans) {
-            	String[] pd = p.split(",");
-            	BigDecimal pdamount = Convert.toVon(pd[1], Unit.LAT);
-            	restrictingPlans.add(new RestrictingPlan( new BigInteger(pd[0]), pdamount.toBigInteger()));
-            }
-    		String address = arg.getParameter("address");
-    		PlatonSendTransaction platonSendTransaction = 
-    				restrictingPlanContract.createRestrictingPlanReturnTransaction(address, restrictingPlans,gasProvider).send();
-			BaseResponse baseResponse = restrictingPlanContract.getTransactionResponse(platonSendTransaction).send();
-			
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				List<RestrictingPlan> restrictingPlans = new ArrayList<>();
+				String plan = arg.getParameter("plan");
+				String[] plans = plan.split(";");
+				for (String p : plans) {
+					String[] pd = p.split(",");
+					BigDecimal pdamount = Convert.toVon(pd[1], Unit.LAT);
+					restrictingPlans.add(new RestrictingPlan(new BigInteger(pd[0]), pdamount.toBigInteger()));
+				}
+				String address = arg.getParameter("address");
+				PlatonSendTransaction platonSendTransaction =
+						this.restrictingPlanContract.createRestrictingPlanReturnTransaction(address, restrictingPlans, this.gasProvider).send();
+				BaseResponse baseResponse = this.restrictingPlanContract.getTransactionResponse(platonSendTransaction).send();
+
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				List<com.alaya.contracts.ppos.dto.resp.RestrictingPlan> restrictingPlans = new ArrayList<>();
+				String plan = arg.getParameter("plan");
+				String[] plans = plan.split(";");
+				for (String p : plans) {
+					String[] pd = p.split(",");
+					BigDecimal pdamount = Convert.toVon(pd[1], Unit.LAT);
+					restrictingPlans.add(new com.alaya.contracts.ppos.dto.resp.RestrictingPlan(new BigInteger(pd[0]), pdamount.toBigInteger()));
+				}
+				String address = arg.getParameter("address");
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction =
+						this.restrictingPlanContractA.createRestrictingPlanReturnTransaction(address, restrictingPlans, this.gasProviderA).send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.restrictingPlanContractA.getTransactionResponse(platonSendTransaction).send();
+
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

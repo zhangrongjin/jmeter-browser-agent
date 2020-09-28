@@ -26,12 +26,22 @@ public class RewardContractTest_reward extends BaseSampler {
 		
 		String result = null;
 		try {
-			TransactionResponse res = rewardContract.withdrawDelegateReward(gasProvider).send();
-			result = res.toString();
-			if(res.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				TransactionResponse res = this.rewardContract.withdrawDelegateReward(this.gasProvider).send();
+				result = res.toString();
+				if (res.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.TransactionResponse res = this.rewardContractA.withdrawDelegateReward(this.gasProviderA).send();
+				result = res.toString();
+				if (res.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

@@ -44,12 +44,13 @@ public class USDTContractTest_transfer extends BaseSampler {
 		Arguments params = new Arguments();
 		params.addArgument("url", "http://192.168.112.171:6789");
 		params.addArgument("addressPrivateKey", "4484092b68df58d639f11d59738983e2b8b81824f3c0c759edd6773f9adadfe7");
+		params.addArgument("fromPrivateKey", "4484092b68df58d639f11d59738983e2b8b81824f3c0c759edd6773f9adadfe7");
 		params.addArgument("gasPrice", "1000000000");
 		params.addArgument("gasLimit", "4700000");
-		params.addArgument("contractAddress", "0x90b187980cb23eed8e2b367a9560b23074116e19");
-		params.addArgument("toAddress", "0x60ceca9c1290ee56b98d4e160ef0453f7c40d219");
+		params.addArgument("contractAddress", "lax1gv64c7ru2zmy03p97k2tgsw5h463j5wpcfzhc5");
+		params.addArgument("toAddress", "lax1vr8v48qjjrh9dwvdfctqauz98a7yp5se77fm2e");
 		params.addArgument("value", "1");
-		params.addArgument("chainId", "100");
+		params.addArgument("chainId", "108");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		USDTContractTest_transfer test = new USDTContractTest_transfer();
 		test.setupTest(arg0);

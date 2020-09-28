@@ -21,12 +21,22 @@ public class StakingContractTest_avgTime extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			BaseResponse baseResponse = stakingContract.getAvgPackTime().send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.stakingContract.getAvgPackTime().send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.stakingContractA.getAvgPackTime().send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.toString();

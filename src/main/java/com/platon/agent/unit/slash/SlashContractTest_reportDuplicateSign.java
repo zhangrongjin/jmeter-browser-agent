@@ -23,14 +23,26 @@ public class SlashContractTest_reportDuplicateSign extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			PlatonSendTransaction platonSendTransaction = 
-				slashContract.reportDoubleSignReturnTransaction(DuplicateSignType.PREPARE_BLOCK, arg.getParameter("data"),gasProvider).send();
-			BaseResponse baseResponse = slashContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				PlatonSendTransaction platonSendTransaction =
+						this.slashContract.reportDoubleSignReturnTransaction(DuplicateSignType.PREPARE_BLOCK, arg.getParameter("data"), this.gasProvider).send();
+				BaseResponse baseResponse = this.slashContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction =
+						this.slashContractA.reportDoubleSignReturnTransaction(com.alaya.contracts.ppos.dto.common.DuplicateSignType.PREPARE_BLOCK, arg.getParameter("data"), this.gasProviderA).send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.slashContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();
@@ -62,7 +74,7 @@ public class SlashContractTest_reportDuplicateSign extends BaseSampler {
 
 	@Override
 	public void setArguments(Arguments params) {
-		params.addArgument("data", data);
+		params.addArgument("data", this.data);
 	}
 	 
 

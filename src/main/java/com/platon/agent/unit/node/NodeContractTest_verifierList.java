@@ -1,16 +1,15 @@
 package com.platon.agent.unit.node;
 
-import java.util.List;
-
-import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
-import org.apache.jmeter.samplers.SampleResult;
-
 import com.alibaba.fastjson.JSON;
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.CallResponse;
 import com.platon.sdk.contracts.ppos.dto.resp.Node;
+import org.apache.jmeter.config.Arguments;
+import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
+import org.apache.jmeter.samplers.SampleResult;
+
+import java.util.List;
 
 /**
  * 查询当前结算周期的验证人队列
@@ -24,9 +23,15 @@ public class NodeContractTest_verifierList extends BaseSampler {
 		String result = null;
 		try {
 			sr.sampleStart();
-			CallResponse<List<Node>> baseResponse = this.nodeContract.getVerifierList().send();
-			List<Node> nodeList = baseResponse.getData();
-			result = JSON.toJSONString(nodeList, true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				CallResponse<List<Node>> baseResponse = this.nodeContract.getVerifierList().send();
+				List<Node> nodeList = baseResponse.getData();
+				result = JSON.toJSONString(nodeList, true);
+			}else {
+				com.alaya.contracts.ppos.dto.CallResponse<List<com.alaya.contracts.ppos.dto.resp.Node>> baseResponse = this.nodeContractA.getVerifierList().send();
+				List<com.alaya.contracts.ppos.dto.resp.Node> nodeList = baseResponse.getData();
+				result = JSON.toJSONString(nodeList, true);
+			}
 			sr.setSuccessful(true);
 		} catch (Exception e) {
 			result = e.getMessage();

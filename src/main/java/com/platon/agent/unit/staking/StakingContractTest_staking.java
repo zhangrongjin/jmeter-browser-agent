@@ -1,10 +1,10 @@
 package com.platon.agent.unit.staking;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
+import com.platon.sdk.contracts.ppos.dto.req.StakingParam;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -12,11 +12,10 @@ import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
-import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
-import com.platon.sdk.contracts.ppos.dto.req.StakingParam;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 
 public class StakingContractTest_staking extends BaseSampler {
 
@@ -38,11 +37,7 @@ public class StakingContractTest_staking extends BaseSampler {
 		sr.sampleStart();
 		try {
 			String type = arg.getParameter("type");
-			StakingAmountType stakingAmountType = StakingAmountType.FREE_AMOUNT_TYPE;
-			if(type.equals("1")) {
-				stakingAmountType = StakingAmountType.RESTRICTING_AMOUNT_TYPE;
-			}
-			
+
 			String benifitAddress = arg.getParameter("benefitAddress");
 			String externalId = arg.getParameter("externalId");
 			String nodeName = arg.getParameter("nodeName");
@@ -52,22 +47,48 @@ public class StakingContractTest_staking extends BaseSampler {
 			String nodeId = arg.getParameter("nodeId");
 			String blsPubKey = arg.getParameter("blsPubKey");
 			String rewardPer = arg.getParameter("rewardPer");
-			
-			PlatonSendTransaction platonSendTransaction = stakingContract
-					.stakingReturnTransaction(new StakingParam.Builder().setNodeId(nodeId)
-							.setAmount(stakingAmount.toBigInteger()).setStakingAmountType(stakingAmountType)
-							.setBenifitAddress(benifitAddress).setExternalId(externalId).setNodeName(nodeName)
-							.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey)
-							.setRewardPer(new BigInteger(rewardPer))
-							.setProcessVersion(web3j.getProgramVersion().send().getAdminProgramVersion())
-				               .setBlsProof(web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build(),gasProvider)
-					.send();
-			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				StakingAmountType stakingAmountType = StakingAmountType.FREE_AMOUNT_TYPE;
+				if (type.equals("1")) {
+					stakingAmountType = StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+				}
+				PlatonSendTransaction platonSendTransaction = this.stakingContract
+						.stakingReturnTransaction(new StakingParam.Builder().setNodeId(nodeId)
+								.setAmount(stakingAmount.toBigInteger()).setStakingAmountType(stakingAmountType)
+								.setBenifitAddress(benifitAddress).setExternalId(externalId).setNodeName(nodeName)
+								.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey)
+								.setRewardPer(new BigInteger(rewardPer))
+								.setProcessVersion(this.web3j.getProgramVersion().send().getAdminProgramVersion())
+								.setBlsProof(this.web3j.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build(), this.gasProvider)
+						.send();
+				BaseResponse baseResponse = this.stakingContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.enums.StakingAmountType stakingAmountType = com.alaya.contracts.ppos.dto.enums.StakingAmountType.FREE_AMOUNT_TYPE;
+				if (type.equals("1")) {
+					stakingAmountType = com.alaya.contracts.ppos.dto.enums.StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+				}
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction = this.stakingContractA
+						.stakingReturnTransaction(new com.alaya.contracts.ppos.dto.req.StakingParam.Builder().setNodeId(nodeId)
+								.setAmount(stakingAmount.toBigInteger()).setStakingAmountType(stakingAmountType)
+								.setBenifitAddress(benifitAddress).setExternalId(externalId).setNodeName(nodeName)
+								.setWebSite(webSite).setDetails(details).setBlsPubKey(blsPubKey)
+								.setRewardPer(new BigInteger(rewardPer))
+								.setProcessVersion(this.web3jA.getProgramVersion().send().getAdminProgramVersion())
+								.setBlsProof(this.web3jA.getSchnorrNIZKProve().send().getAdminSchnorrNIZKProve()).build(), this.gasProviderA)
+						.send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.stakingContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

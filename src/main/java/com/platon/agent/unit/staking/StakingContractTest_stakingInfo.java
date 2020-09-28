@@ -25,12 +25,22 @@ public class StakingContractTest_stakingInfo extends BaseSampler {
 		sr.sampleStart();
 		try {
 			String nodeId = arg.getParameter("nodeId");
-			BaseResponse baseResponse = stakingContract.getStakingInfo(nodeId).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.stakingContract.getStakingInfo(nodeId).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.stakingContractA.getStakingInfo(nodeId).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.toString();

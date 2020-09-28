@@ -1,16 +1,15 @@
 package com.platon.agent.unit.reward;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
-import org.apache.jmeter.samplers.SampleResult;
-
 import com.alibaba.fastjson.JSONObject;
 import com.platon.agent.base.BaseSampler;
 import com.platon.agent.check.InnerContractAddrEnum;
 import com.platon.sdk.contracts.ppos.dto.resp.Reward;
+import org.apache.jmeter.config.Arguments;
+import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
+import org.apache.jmeter.samplers.SampleResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 查询待提取委托奖励
@@ -31,12 +30,22 @@ public class RewardContractTest_queryReward extends BaseSampler {
 		}
 		String result = "";
 		try {
-			List<Reward> res = rewardContract.getDelegateReward(address, nodeList).send().getData();
-			if(res != null) {
-				sr.setSuccessful(true);
-				result = result + JSONObject.toJSONString(res);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				List<Reward> res = this.rewardContract.getDelegateReward(address, nodeList).send().getData();
+				if (res != null) {
+					sr.setSuccessful(true);
+					result = result + JSONObject.toJSONString(res);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				List<com.alaya.contracts.ppos.dto.resp.Reward> res = this.rewardContractA.getDelegateReward(address, nodeList).send().getData();
+				if (res != null) {
+					sr.setSuccessful(true);
+					result = result + JSONObject.toJSONString(res);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

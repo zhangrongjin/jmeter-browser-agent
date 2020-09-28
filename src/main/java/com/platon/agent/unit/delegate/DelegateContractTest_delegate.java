@@ -28,22 +28,41 @@ public class DelegateContractTest_delegate extends BaseSampler {
 		String result = null;
 		try {
 			String type = arg.getParameter("type");
-			StakingAmountType stakingAmountType = StakingAmountType.FREE_AMOUNT_TYPE;
-			if(type.equals("1")) {
-				stakingAmountType = StakingAmountType.RESTRICTING_AMOUNT_TYPE;
-			}
+
 			BigDecimal stakingAmount = Convert.toVon(arg.getParameter("amount"), Unit.LAT);
 
-			PlatonSendTransaction platonSendTransaction =
-					this.delegateContract.delegateReturnTransaction(
-							arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger(), this.gasProvider).send();
-			BaseResponse baseResponse = this.delegateContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				StakingAmountType stakingAmountType = StakingAmountType.FREE_AMOUNT_TYPE;
+				if(type.equals("1")) {
+					stakingAmountType = StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+				}
+				PlatonSendTransaction platonSendTransaction =
+						this.delegateContract.delegateReturnTransaction(
+								arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger(), this.gasProvider).send();
+				BaseResponse baseResponse = this.delegateContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.contracts.ppos.dto.enums.StakingAmountType stakingAmountType = com.alaya.contracts.ppos.dto.enums.StakingAmountType.FREE_AMOUNT_TYPE;
+				if(type.equals("1")) {
+					stakingAmountType = com.alaya.contracts.ppos.dto.enums.StakingAmountType.RESTRICTING_AMOUNT_TYPE;
+				}
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction =
+						this.delegateContractA.delegateReturnTransaction(
+								arg.getParameter("nodeId"), stakingAmountType, stakingAmount.toBigInteger(), this.gasProviderA).send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.delegateContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
+
 		} catch (Exception e) {
 			result = e.getMessage();
 			sr.setSuccessful(false);

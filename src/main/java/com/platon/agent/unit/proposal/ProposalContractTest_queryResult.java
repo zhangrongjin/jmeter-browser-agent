@@ -22,14 +22,26 @@ public class ProposalContractTest_queryResult extends BaseSampler {
 		sr.sampleStart();
 		try {
 			String proposalID = arg.getParameter("proposalID");
-			BaseResponse baseResponse = this.proposalContract.getProposal(proposalID).send();
-			BaseResponse response = this.proposalContract.getTallyResult(proposalID).send();
+			if(this.chainType.equals(this.chainTypeP)) {
+				BaseResponse baseResponse = this.proposalContract.getProposal(proposalID).send();
+				BaseResponse response = this.proposalContract.getTallyResult(proposalID).send();
 
-			result = "提案信息：" + baseResponse.toString() + ",投票结果：" + response.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
-			} else {
-				sr.setSuccessful(false);
+				result = "提案信息：" + baseResponse.toString() + ",投票结果：" + response.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.proposalContractA.getProposal(proposalID).send();
+				com.alaya.contracts.ppos.dto.BaseResponse response = this.proposalContractA.getTallyResult(proposalID).send();
+
+				result = "提案信息：" + baseResponse.toString() + ",投票结果：" + response.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

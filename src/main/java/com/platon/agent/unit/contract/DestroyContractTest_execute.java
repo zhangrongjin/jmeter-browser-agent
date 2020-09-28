@@ -1,5 +1,6 @@
 package com.platon.agent.unit.contract;
 
+import com.platon.agent.contract.SuicideAndSelfdestructAlaya;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -22,10 +23,17 @@ public class DestroyContractTest_execute extends BaseSampler {
 		sr.sampleStart();
 		
 		String result = null;
+		String transactionHash = "";
 		try {
-			SuicideAndSelfdestruct suicideAndSelfdestruct = SuicideAndSelfdestruct.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
-			TransactionReceipt receipt = suicideAndSelfdestruct.kill().send();
-			String transactionHash = receipt.getTransactionHash();
+			if(this.chainType.equals(this.chainTypeP)) {
+				SuicideAndSelfdestruct suicideAndSelfdestruct = SuicideAndSelfdestruct.deploy(this.web3j, this.transactionManager, this.gasProvider, this.chainId).send();
+				TransactionReceipt receipt = suicideAndSelfdestruct.kill().send();
+				transactionHash = receipt.getTransactionHash();
+			} else {
+				SuicideAndSelfdestructAlaya suicideAndSelfdestruct = SuicideAndSelfdestructAlaya.deploy(this.web3jA, this.transactionManagerA, this.gasProviderA, this.chainId).send();
+				com.alaya.protocol.core.methods.response.TransactionReceipt receipt = suicideAndSelfdestruct.kill().send();
+				transactionHash = receipt.getTransactionHash();
+			}
 			result += "合约调用成功，交易hash："+transactionHash;
 			sr.setSuccessful(true);
 		} catch (Exception e) {

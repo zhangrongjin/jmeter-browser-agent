@@ -20,12 +20,22 @@ public class ProposalContractTest_programVersion extends BaseSampler {
 		String result = null;
 		sr.sampleStart();
 		try {
-			ProgramVersion programVersion = this.web3j.getProgramVersion().send().getAdminProgramVersion();
-			if(programVersion != null) {
-				sr.setSuccessful(true);
-				result = JSONObject.toJSONString(programVersion);
-			} else {
-				sr.setSuccessful(false);
+			if(this.chainType.equals(this.chainTypeP)) {
+				ProgramVersion programVersion = this.web3j.getProgramVersion().send().getAdminProgramVersion();
+				if (programVersion != null) {
+					sr.setSuccessful(true);
+					result = JSONObject.toJSONString(programVersion);
+				} else {
+					sr.setSuccessful(false);
+				}
+			}else {
+				com.alaya.protocol.core.methods.response.bean.ProgramVersion programVersion = this.web3jA.getProgramVersion().send().getAdminProgramVersion();
+				if (programVersion != null) {
+					sr.setSuccessful(true);
+					result = JSONObject.toJSONString(programVersion);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

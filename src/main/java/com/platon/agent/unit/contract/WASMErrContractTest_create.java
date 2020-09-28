@@ -1,5 +1,6 @@
 package com.platon.agent.unit.contract;
 
+import com.platon.agent.contract.DestoryContractAlaya;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -26,9 +27,17 @@ public class WASMErrContractTest_create extends BaseSampler {
 			 /**
              * 交易成功的合约场景
              */
-			Destory_contract failContract = Destory_contract.deploy(this.web3j, this.transactionManager, this.gasProvider,"", this.chainId).send();
-            String contractAddress = failContract.getContractAddress();
-            String transactionHash = failContract.getTransactionReceipt().get().getTransactionHash();
+			String contractAddress ="";
+			String transactionHash ="";
+			if(this.chainType.equals(this.chainTypeP)) {
+				Destory_contract failContract = Destory_contract.deploy(this.web3j, this.transactionManager, this.gasProvider, "", this.chainId).send();
+				contractAddress = failContract.getContractAddress();
+				transactionHash = failContract.getTransactionReceipt().get().getTransactionHash();
+			} else {
+				DestoryContractAlaya failContract = DestoryContractAlaya.deploy(this.web3jA, this.transactionManagerA, this.gasProviderA, "", this.chainId).send();
+				contractAddress = failContract.getContractAddress();
+				transactionHash = failContract.getTransactionReceipt().get().getTransactionHash();
+			}
 
 			result += "合约发布成功，合约地址：" + contractAddress + "；交易hash："+transactionHash;
 			sr.setSuccessful(true);

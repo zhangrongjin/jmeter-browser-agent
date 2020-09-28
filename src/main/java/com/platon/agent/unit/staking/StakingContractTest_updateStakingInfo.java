@@ -1,16 +1,15 @@
 package com.platon.agent.unit.staking;
 
-import java.math.BigInteger;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.req.UpdateStakingParam;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
-import com.platon.sdk.contracts.ppos.dto.req.UpdateStakingParam;
+import java.math.BigInteger;
 
 public class StakingContractTest_updateStakingInfo extends BaseSampler {
 
@@ -33,18 +32,34 @@ public class StakingContractTest_updateStakingInfo extends BaseSampler {
 			String nodeId = arg.getParameter("nodeId");
 			String rewardPer = arg.getParameter("rewardPer");
 
-			PlatonSendTransaction platonSendTransaction = stakingContract.updateStakingInfoReturnTransaction(
-					new UpdateStakingParam.Builder().setBenifitAddress(benifitAddress).setExternalId(externalId)
-							.setNodeId(nodeId).setNodeName(nodeName).setWebSite(webSite).setRewardPer(new BigInteger(rewardPer))
-							.setDetails(details).build(),gasProvider)
-					.send();
+			if(this.chainType.equals(this.chainTypeP)) {
+				PlatonSendTransaction platonSendTransaction = this.stakingContract.updateStakingInfoReturnTransaction(
+						new UpdateStakingParam.Builder().setBenifitAddress(benifitAddress).setExternalId(externalId)
+								.setNodeId(nodeId).setNodeName(nodeName).setWebSite(webSite).setRewardPer(new BigInteger(rewardPer))
+								.setDetails(details).build(), this.gasProvider)
+						.send();
 
-			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+				BaseResponse baseResponse = this.stakingContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction = this.stakingContractA.updateStakingInfoReturnTransaction(
+						new com.alaya.contracts.ppos.dto.req.UpdateStakingParam.Builder().setBenifitAddress(benifitAddress).setExternalId(externalId)
+								.setNodeId(nodeId).setNodeName(nodeName).setWebSite(webSite).setRewardPer(new BigInteger(rewardPer))
+								.setDetails(details).build(), this.gasProviderA)
+						.send();
+
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.stakingContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

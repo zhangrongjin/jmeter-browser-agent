@@ -1,7 +1,9 @@
 package com.platon.agent.unit.staking;
 
-import java.math.BigDecimal;
-
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
+import com.platon.sdk.contracts.ppos.dto.BaseResponse;
+import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -9,10 +11,7 @@ import org.web3j.protocol.core.methods.response.PlatonSendTransaction;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
-import com.platon.sdk.contracts.ppos.dto.BaseResponse;
-import com.platon.sdk.contracts.ppos.dto.enums.StakingAmountType;
+import java.math.BigDecimal;
 
 public class StakingContractTest_addStaking extends BaseSampler {
 
@@ -29,14 +28,26 @@ public class StakingContractTest_addStaking extends BaseSampler {
 		try {
 			String nodeId = arg.getParameter("nodeId");
 			BigDecimal addStakingAmount = Convert.toVon( arg.getParameter("stakingAmount"), Unit.LAT);
-			PlatonSendTransaction platonSendTransaction = stakingContract.addStakingReturnTransaction(nodeId,
-					StakingAmountType.FREE_AMOUNT_TYPE, addStakingAmount.toBigInteger(),gasProvider).send();
-			BaseResponse baseResponse = stakingContract.getTransactionResponse(platonSendTransaction).send();
-			result = baseResponse.toString();
-			if(baseResponse.isStatusOk()) {
-				sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				PlatonSendTransaction platonSendTransaction = this.stakingContract.addStakingReturnTransaction(nodeId,
+						StakingAmountType.FREE_AMOUNT_TYPE, addStakingAmount.toBigInteger(), this.gasProvider).send();
+				BaseResponse baseResponse = this.stakingContract.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			} else {
-				sr.setSuccessful(false);
+				com.alaya.protocol.core.methods.response.PlatonSendTransaction platonSendTransaction = this.stakingContractA.addStakingReturnTransaction(nodeId,
+						com.alaya.contracts.ppos.dto.enums.StakingAmountType.FREE_AMOUNT_TYPE, addStakingAmount.toBigInteger(), this.gasProviderA).send();
+				com.alaya.contracts.ppos.dto.BaseResponse baseResponse = this.stakingContractA.getTransactionResponse(platonSendTransaction).send();
+				result = baseResponse.toString();
+				if (baseResponse.isStatusOk()) {
+					sr.setSuccessful(true);
+				} else {
+					sr.setSuccessful(false);
+				}
 			}
 		} catch (Exception e) {
 			result = e.getMessage();

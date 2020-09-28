@@ -1,8 +1,8 @@
 package com.platon.agent.unit;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
+import com.alaya.utils.Convert;
+import com.platon.agent.base.BaseSampler;
+import com.platon.agent.check.InnerContractAddrEnum;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
@@ -10,8 +10,8 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert.Unit;
 
-import com.platon.agent.base.BaseSampler;
-import com.platon.agent.check.InnerContractAddrEnum;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * 转账
@@ -26,12 +26,21 @@ public class Test_transfer extends BaseSampler {
 		sr.sampleStart();
 		String result = "";
 		try {
-			Transfer transfer = new Transfer(web3j, transactionManager);
-			transfer.sendFunds(arg0.getParameter("toAddress").trim(), new BigDecimal(arg0.getParameter("amount")), Unit.LAT
-					,new BigInteger(arg0.getParameter("gasPrice")),new BigInteger(arg0.getParameter("gasLimit"))).send();
-			result = "stakingCredentials balance=" + 
-					web3j.platonGetBalance(arg0.getParameter("toAddress").trim(), DefaultBlockParameterName.LATEST).send().getBalance();
-			sr.setSuccessful(true);
+			if(this.chainType.equals(this.chainTypeP)) {
+				Transfer transfer = new Transfer(this.web3j, this.transactionManager);
+				transfer.sendFunds(arg0.getParameter("toAddress").trim(), new BigDecimal(arg0.getParameter("amount")), Unit.LAT
+						, new BigInteger(arg0.getParameter("gasPrice")), new BigInteger(arg0.getParameter("gasLimit"))).send();
+				result = "stakingCredentials balance=" +
+						this.web3j.platonGetBalance(arg0.getParameter("toAddress").trim(), DefaultBlockParameterName.LATEST).send().getBalance();
+				sr.setSuccessful(true);
+			} else {
+				com.alaya.tx.Transfer transfer = new com.alaya.tx.Transfer(this.web3jA, this.transactionManagerA);
+				transfer.sendFunds(arg0.getParameter("toAddress").trim(), new BigDecimal(arg0.getParameter("amount")), Convert.Unit.ATP
+						, new BigInteger(arg0.getParameter("gasPrice")), new BigInteger(arg0.getParameter("gasLimit"))).send();
+				result = "stakingCredentials balance=" +
+						this.web3j.platonGetBalance(arg0.getParameter("toAddress").trim(), DefaultBlockParameterName.LATEST).send().getBalance();
+				sr.setSuccessful(true);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = "data error:" + e.getMessage() +";"+arg0.getParameter("toAddress") ;

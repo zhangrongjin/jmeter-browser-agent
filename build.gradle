@@ -1,5 +1,5 @@
 group 'com.platon.agent'
-version '0.13.0.0'
+version '0.13.1.1'
 
 buildscript {
   repositories {
@@ -36,8 +36,10 @@ dependencies {
     compile "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compile "commons-io:commons-io:$commonIoVersion"
-    compile "com.platon.client:core:$platonClientVersion"
     compile "com.github.kulya:jmeter-gradle-plugin:1.3.4-2.13"
+
+    compile "com.platon.client:core:$platonClientVersion"
+    compile "com.alaya.client:alaya-core:$alayaClientVersion"
 
 
     testCompile group: 'org.hsqldb', name: 'hsqldb', version: '2.5.0'
