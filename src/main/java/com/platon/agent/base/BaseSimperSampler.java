@@ -24,10 +24,9 @@ public abstract class BaseSimperSampler extends AbstractJavaSamplerClient {
 		return params;
 	}
 
-	
+	@Override
 	public void setupTest(JavaSamplerContext arg) {
 		this.chainType = arg.getParameter("chainType");
-
     }
 
 	public abstract void setArguments(Arguments params);

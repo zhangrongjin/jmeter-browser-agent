@@ -49,10 +49,11 @@ public class Test_to_bech32 extends BaseSimperSampler {
 	
 	public static void main(String[] args) {
 		Arguments params = new Arguments();
-		params.addArgument("url", "D:\\");
-		params.addArgument("password", "88888888");
+		params.addArgument("address", "0x60ceca9c1290ee56b98d4e160ef0453f7c40d219");
+		params.addArgument("chainType", "alaya");
 		JavaSamplerContext arg0 = new JavaSamplerContext(params);
 		Test_to_bech32 test = new Test_to_bech32();
+		test.setupTest(arg0);
 		SampleResult sampleResult = test.runTest(arg0);
 		System.out.println("result:"+sampleResult.getResponseDataAsString());
 	}
